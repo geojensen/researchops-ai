@@ -1,0 +1,92 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'poppins', sans-serif;
+    font-size: 18px;
+}
+body{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container{
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: normal;
+    align-content: normal;
+}
+input{
+    width: 300px;
+    padding: 10px;
+    flex: 0 0 auto;
+}
+
+input:disabled{
+    color: #5c636a;
+}
+
+.inputs{
+margin-left: 40px;
+}
+
+.submit{
+    display: flex;
+    justify-content: center;
+}
+
+.loading-animation {
+    border: 6px solid #f3f3f3; /* Light grey border */
+    border-top: 6px solid #3498db; /* Blue border for animation */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite; /* Apply animation */
+    margin: 20px auto; /* Center the animation horizontally */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); } /* Start position */
+    100% { transform: rotate(360deg); } /* End position */
+}
+
+@keyframes button-loading-spinner {
+    from {
+        transform: rotate(0turn);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#submit{
+    border: none;
+    background-color: #fe6662;
+    color: white;
+    width: 200px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+#submit:disabled{
+    background-color: #333333;
+}
+
+#submit:hover{
+    background-color: #333333;
+}
+
+.result{
+    font-family: 'poppins', verdana;
+    font-size: 37px;
+}
