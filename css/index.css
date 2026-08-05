@@ -40,18 +40,18 @@ margin-left: 40px;
 }
 
 .loading-animation {
-    border: 6px solid #f3f3f3; /* Light grey border */
-    border-top: 6px solid #3498db; /* Blue border for animation */
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    animation: spin 1s linear infinite; /* Apply animation */
-    margin: 20px auto; /* Center the animation horizontally */
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); } /* Start position */
-    100% { transform: rotate(360deg); } /* End position */
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @keyframes button-loading-spinner {
@@ -89,4 +89,31 @@ margin-left: 40px;
 .result{
     font-family: 'poppins', verdana;
     font-size: 37px;
+}
+
+.resources{
+    width: 100%;
+    margin-top: 36px;
+    text-align: center;
+}
+
+.resources a{
+    display: inline-flex;
+    padding-top: 16px;
+    gap: 12px;
+    color: #333333;
+    border-top: 1px solid #dddddd;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.resources a:hover,
+.resources a:focus-visible{
+    color: #b53f3b;
+}
+
+.resources span{
+    color: #666666;
+    font-size: 14px;
+    font-weight: 400;
 }

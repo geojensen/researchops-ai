@@ -1,0 +1,11 @@
+{
+  "name": "researchops-ai",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"spec/*.spec.mjs\""
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
