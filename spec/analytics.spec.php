@@ -21,7 +21,7 @@ function expectAnalyticsTrue(bool $condition, string $message): void
 
 $now = new DateTimeImmutable('2026-08-06 12:00:00', new DateTimeZone('UTC'));
 $event = [
-    'path' => '/dstl-method-criteria/',
+    'path' => '/qualitative-analysis-agent-manifest/',
     'referrer' => 'linkedin.com',
     'device' => 'Desktop',
     'browser' => 'Chrome',
@@ -56,8 +56,21 @@ expectAnalyticsTrue(str_contains($environment, "EXISTING=value"), 'Unrelated env
 expectAnalyticsSame(1, substr_count($environment, 'ANALYTICS_PASSWORD_HASH='), 'The password hash is replaced once.');
 expectAnalyticsSame(1, substr_count($environment, 'ANALYTICS_HASH_KEY='), 'The fingerprint key is replaced once.');
 expectAnalyticsTrue(
-    str_contains($environment, "ANALYTICS_PASSWORD_HASH='" . '$2y$10$new-hash' . "'"),
+    str_contains($environment, 'ANALYTICS_PASSWORD_HASH=' . '$2y$10$new-hash'),
     'The replacement hash keeps its dollar signs.',
+);
+expectAnalyticsSame(
+    '$2y$10$new-hash',
+    normalizeAnalyticsSetting("'$2y$10$new-hash'"),
+    'Quoted environment values normalize before use.',
+);
+expectAnalyticsSame(
+    [
+        '/home/ploi/researchops.ai/.env',
+        '/home/ploi/researchops.ai/public/.env',
+    ],
+    findAnalyticsEnvironmentPaths('/home/ploi/researchops.ai/public/analytics'),
+    'The private project environment takes precedence over a copied public file.',
 );
 
 $directory = sys_get_temp_dir() . '/researchops-analytics-' . bin2hex(random_bytes(6));

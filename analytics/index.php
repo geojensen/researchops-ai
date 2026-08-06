@@ -147,7 +147,7 @@ $maximumHistoryViews = max(1, ...array_map(
         <div>
             <p class="eyebrow">Agent manifest</p>
             <h1>Visitor analytics</h1>
-            <p>Traffic for <a href="/dstl-method-criteria/">/dstl-method-criteria/</a>. Times are UTC.</p>
+            <p>Traffic for <a href="/qualitative-analysis-agent-manifest/">/qualitative-analysis-agent-manifest/</a>. Times are UTC.</p>
         </div>
     </header>
 

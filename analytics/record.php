@@ -33,7 +33,7 @@ try {
     sendAnalyticsResponse(400, ['success' => false]);
 }
 
-$expectedPath = '/dstl-method-criteria/';
+$expectedPath = '/qualitative-analysis-agent-manifest/';
 if (!is_array($payload) || ($payload['path'] ?? '') !== $expectedPath) {
     sendAnalyticsResponse(400, ['success' => false]);
 }

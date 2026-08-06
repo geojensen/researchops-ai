@@ -25,8 +25,8 @@ Connect `geojensen/researchops-ai` on `main` and serve the repository root with 
 The analytics endpoint will refuse traffic until these values exist in Ploi's environment file:
 
 ```dotenv
-ANALYTICS_PASSWORD_HASH='$2y$...'
-ANALYTICS_HASH_KEY='at-least-32-random-characters'
+ANALYTICS_PASSWORD_HASH=$2y$...
+ANALYTICS_HASH_KEY=at-least-32-random-characters
 ```
 
 Generate the password hash and fingerprint key on the server without writing either value into Git:
@@ -36,6 +36,6 @@ php -r 'echo password_hash("YOUR ADMIN PASSWORD", PASSWORD_DEFAULT), PHP_EOL;'
 php -r 'echo bin2hex(random_bytes(32)), PHP_EOL;'
 ```
 
-Paste the first result into `ANALYTICS_PASSWORD_HASH` and the second into `ANALYTICS_HASH_KEY`, keeping the quotes. After deployment, open `https://researchops.ai/analytics/` and sign in. Successful login excludes that browser from subsequent traffic counts; use a private browser window when testing a public pageview.
+Paste the first result into `ANALYTICS_PASSWORD_HASH` and the second into `ANALYTICS_HASH_KEY`. After deployment, open `https://researchops.ai/analytics/` and sign in. Successful login excludes that browser from subsequent traffic counts; use a private browser window when testing a public pageview.
 
 Analytics data is created at runtime and remains outside Git. The PHP process must be able to write to the `analytics` directory.

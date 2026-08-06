@@ -75,6 +75,11 @@ try {
         throw new RuntimeException('The environment file could not be promoted. Nothing changed.');
     }
 
+    $storedSettings = readAnalyticsSettingsFile($environmentPath);
+    if (!password_verify($password, $storedSettings['ANALYTICS_PASSWORD_HASH'] ?? '')) {
+        throw new RuntimeException('The stored password could not be verified.');
+    }
+
     fwrite(STDOUT, "Analytics password updated and verified.\n");
 } catch (Throwable $error) {
     fwrite(STDERR, $error->getMessage() . PHP_EOL);

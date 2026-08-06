@@ -3,37 +3,78 @@ declare(strict_types=1);
 
 const ANALYTICS_DATA_PREFIX = "<?php http_response_code(404); exit; ?>\n";
 
-function readAnalyticsSetting(string $key): ?string
+function normalizeAnalyticsSetting(mixed $value): ?string
 {
-    foreach ([$_ENV, $_SERVER] as $source) {
-        if (isset($source[$key]) && trim((string) $source[$key]) !== '') {
-            return trim((string) $source[$key]);
+    if (!is_scalar($value)) {
+        return null;
+    }
+
+    $normalized = trim((string) $value);
+    if (strlen($normalized) >= 2) {
+        $first = $normalized[0];
+        $last = $normalized[strlen($normalized) - 1];
+        if (($first === "'" && $last === "'") || ($first === '"' && $last === '"')) {
+            $normalized = substr($normalized, 1, -1);
         }
     }
 
-    $value = getenv($key);
-    if ($value !== false && trim($value) !== '') {
-        return trim($value);
+    return $normalized === '' ? null : $normalized;
+}
+
+function findAnalyticsEnvironmentPaths(string $analyticsDirectory): array
+{
+    $parent = dirname($analyticsDirectory);
+    $projectRoot = basename($parent) === 'public' ? dirname($parent) : $parent;
+
+    return array_values(array_unique([
+        $projectRoot . '/.env',
+        $parent . '/.env',
+    ]));
+}
+
+function readAnalyticsSettingsFile(string $path): array
+{
+    $parsed = parse_ini_file($path, false, INI_SCANNER_RAW);
+    if (!is_array($parsed)) {
+        return [];
+    }
+
+    $settings = [];
+    foreach ($parsed as $key => $value) {
+        $normalized = normalizeAnalyticsSetting($value);
+        if ($normalized !== null) {
+            $settings[$key] = $normalized;
+        }
+    }
+    return $settings;
+}
+
+function readAnalyticsSetting(string $key): ?string
+{
+    foreach ([$_ENV, $_SERVER] as $source) {
+        $normalized = normalizeAnalyticsSetting($source[$key] ?? null);
+        if ($normalized !== null) {
+            return $normalized;
+        }
+    }
+
+    $normalizedEnvironment = normalizeAnalyticsSetting(getenv($key));
+    if ($normalizedEnvironment !== null) {
+        return $normalizedEnvironment;
     }
 
     static $fileSettings;
     if ($fileSettings === null) {
         $fileSettings = [];
-        $paths = array_unique([
-            dirname(__DIR__) . '/.env',
-            dirname(__DIR__, 2) . '/.env',
-        ]);
-        foreach ($paths as $path) {
+        foreach (findAnalyticsEnvironmentPaths(__DIR__) as $path) {
             if (file_exists($path)) {
-                $fileSettings = parse_ini_file($path, false, INI_SCANNER_RAW) ?: [];
+                $fileSettings = readAnalyticsSettingsFile($path);
                 break;
             }
         }
     }
 
-    return isset($fileSettings[$key]) && trim((string) $fileSettings[$key]) !== ''
-        ? trim((string) $fileSettings[$key])
-        : null;
+    return $fileSettings[$key] ?? null;
 }
 
 function resolveAnalyticsDataPath(): string
@@ -46,7 +87,11 @@ function replaceAnalyticsEnvironmentSettings(
     string $passwordHash,
     string $hashKey,
 ): string {
-    if (str_contains($passwordHash, "\n") || str_contains($passwordHash, "'") || strlen($hashKey) < 32) {
+    if (
+        preg_match('/[\r\n\'\"]/', $passwordHash)
+        || preg_match('/[\r\n\'\"]/', $hashKey)
+        || strlen($hashKey) < 32
+    ) {
         throw new InvalidArgumentException('Analytics settings have an invalid shape.');
     }
 
@@ -60,8 +105,8 @@ function replaceAnalyticsEnvironmentSettings(
     }
 
     return rtrim($cleaned) . "\n\n"
-        . "ANALYTICS_PASSWORD_HASH='" . $passwordHash . "'\n"
-        . "ANALYTICS_HASH_KEY='" . $hashKey . "'\n";
+        . "ANALYTICS_PASSWORD_HASH=" . $passwordHash . "\n"
+        . "ANALYTICS_HASH_KEY=" . $hashKey . "\n";
 }
 
 function createEmptyAnalyticsState(): array
@@ -244,7 +289,7 @@ function recordAnalyticsEvent(
 
     array_unshift($state['recent'], [
         'time' => $now->format('Y-m-d H:i:s') . ' UTC',
-        'path' => (string) ($event['path'] ?? '/dstl-method-criteria/'),
+        'path' => (string) ($event['path'] ?? '/qualitative-analysis-agent-manifest/'),
         'referrer' => (string) ($event['referrer'] ?? 'Direct'),
         'device' => (string) ($event['device'] ?? 'Desktop'),
         'browser' => (string) ($event['browser'] ?? 'Other'),

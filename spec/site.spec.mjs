@@ -6,7 +6,9 @@ import {test} from "node:test";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const homepagePath = path.join(root, "index.html");
-const criteriaPath = path.join(root, "dstl-method-criteria", "index.html");
+const manifestPath = path.join(root, "qualitative-analysis-agent-manifest", "index.html");
+const legacyManifestPath = path.join(root, "dstl-method-criteria", "index.php");
+const legacyManifestHtmlPath = path.join(root, "dstl-method-criteria", "index.html");
 const approachPath = path.join(root, "qualitative-concept-analysis", "index.html");
 const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
@@ -22,8 +24,22 @@ function findRuleIds(page) {
   return [...page.matchAll(/<li\s+data-rule-id="([^"]+)"/g)].map((match) => match[1]);
 }
 
-test("publishes the criteria at a stable subpage", () => {
-  assert.equal(fs.existsSync(criteriaPath), true);
+test("publishes the manifest at its unbranded route", () => {
+  assert.equal(fs.existsSync(manifestPath), true);
+  assert.match(
+    readPage(manifestPath),
+    /<link rel="canonical" href="https:\/\/researchops\.ai\/qualitative-analysis-agent-manifest\/">/,
+  );
+});
+
+test("redirects the branded legacy route without retaining a duplicate page", () => {
+  assert.equal(fs.existsSync(legacyManifestPath), true);
+  assert.equal(fs.existsSync(legacyManifestHtmlPath), false);
+
+  const redirect = readPage(legacyManifestPath);
+  assert.match(redirect, /header\([^;]+true, 301\)/);
+  assert.match(redirect, /Location: https:\/\/researchops\.ai\/qualitative-analysis-agent-manifest\//);
+  assert.doesNotMatch(redirect, /data-rule-id/);
 });
 
 test("publishes the approach at a stable subpage", () => {
@@ -33,16 +49,19 @@ test("publishes the approach at a stable subpage", () => {
 test("links to the manifest from the public homepage", () => {
   const homepage = readPage(homepagePath);
 
-  assert.match(homepage, /href="\/dstl-method-criteria\/"/);
+  assert.match(homepage, /href="\/qualitative-analysis-agent-manifest\/"/);
   assert.match(homepage, /Qualitative Analysis Agent Manifest/);
 });
 
 test("links the manifest and its approach in both directions", () => {
-  const manifest = readPage(criteriaPath);
+  const manifest = readPage(manifestPath);
   const approach = readPage(approachPath);
 
   assert.match(manifest, /href="\/qualitative-concept-analysis\/">How this manifest is used/);
-  assert.match(approach, /href="\/dstl-method-criteria\/">View the 62-rule agent manifest/);
+  assert.match(
+    approach,
+    /href="\/qualitative-analysis-agent-manifest\/">View the 62-rule agent manifest/,
+  );
 });
 
 test("answers the four orienting questions", () => {
@@ -67,7 +86,7 @@ test("states the operation, output, governance, and authorship", () => {
 });
 
 test("introduces the manifest to people who were not in the room", () => {
-  const page = readPage(criteriaPath);
+  const page = readPage(manifestPath);
 
   assert.match(
     page,
@@ -85,7 +104,7 @@ test("introduces the manifest to people who were not in the room", () => {
 });
 
 test("describes the list as configuration rather than a human checklist", () => {
-  const manifest = readPage(criteriaPath);
+  const manifest = readPage(manifestPath);
   const approach = readPage(approachPath);
 
   assert.match(manifest, /This manifest configures how an analysis agent/);
@@ -106,12 +125,13 @@ test("has a server-side analytics endpoint, dashboard, and safe setup command", 
 });
 
 test("tracks only the agent manifest page", () => {
-  assert.match(readPage(criteriaPath), /<script src="\/js\/analytics\.js" defer><\/script>/);
+  assert.match(readPage(manifestPath), /<script src="\/js\/analytics\.js" defer><\/script>/);
   assert.doesNotMatch(readPage(homepagePath), /analytics\.js/);
   assert.doesNotMatch(readPage(approachPath), /analytics\.js/);
 
   const script = readPage(analyticsScriptPath);
-  assert.match(script, /\/dstl-method-criteria\//);
+  assert.match(script, /\/qualitative-analysis-agent-manifest\//);
+  assert.doesNotMatch(script, /\/dstl-method-criteria\//);
   assert.doesNotMatch(script, /localStorage|visitor[_-]id/i);
 });
 
@@ -121,8 +141,22 @@ test("requires server secrets without shipping a fallback password", () => {
 
   assert.match(backend, /ANALYTICS_PASSWORD_HASH/);
   assert.match(backend, /ANALYTICS_HASH_KEY/);
-  assert.match(analytics, /dirname\(__DIR__, 2\) \. '\/\.env'/);
+  assert.match(analytics, /findAnalyticsEnvironmentPaths/);
+  assert.match(analytics, /normalizeAnalyticsSetting/);
   assert.doesNotMatch(backend, /password[^\n]{0,40}(default|fallback)/i);
+});
+
+test("leaves the branded path only in its redirect", () => {
+  const activePages = [
+    homepagePath,
+    manifestPath,
+    approachPath,
+    analyticsScriptPath,
+    trackerPath,
+    dashboardPath,
+  ].map(readPage).join("\n");
+
+  assert.doesNotMatch(activePages, /\/dstl-method-criteria\//);
 });
 
 test("keeps analytics data and deployment secrets out of git", () => {
@@ -134,14 +168,14 @@ test("keeps analytics data and deployment secrets out of git", () => {
 });
 
 test("publishes all 62 rules once", () => {
-  const ids = findRuleIds(readPage(criteriaPath));
+  const ids = findRuleIds(readPage(manifestPath));
 
   assert.equal(ids.length, 62);
   assert.equal(new Set(ids).size, 62);
 });
 
 test("preserves the five current group counts", () => {
-  const ids = findRuleIds(readPage(criteriaPath));
+  const ids = findRuleIds(readPage(manifestPath));
   const count = (family) => ids.filter((id) => id.startsWith(`IY-EDS-${family}-`)).length;
 
   assert.deepEqual(
@@ -157,7 +191,7 @@ test("preserves the five current group counts", () => {
 });
 
 test("keeps private source locations and course citations off the public page", () => {
-  const page = readPage(criteriaPath);
+  const page = readPage(manifestPath);
 
   assert.doesNotMatch(page, /commonplace2026|raw\/courses|FTS lesson|handout TS_/i);
 });
