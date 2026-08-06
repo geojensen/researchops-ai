@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test \"spec/*.spec.mjs\""
+    "test": "node --test \"spec/*.spec.mjs\"",
+    "test:server": "php spec/analytics.spec.php",
+    "test:all": "npm test && npm run test:server"
   },
   "engines": {
     "node": ">=18"

@@ -1,0 +1,5 @@
+.DS_Store
+.env
+analytics/.analytics-data.php
+analytics/.analytics-data.php.lock
+analytics/.analytics-data.php.tmp-*

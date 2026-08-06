@@ -8,6 +8,10 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const homepagePath = path.join(root, "index.html");
 const criteriaPath = path.join(root, "dstl-method-criteria", "index.html");
 const approachPath = path.join(root, "qualitative-concept-analysis", "index.html");
+const trackerPath = path.join(root, "analytics", "record.php");
+const dashboardPath = path.join(root, "analytics", "index.php");
+const analyticsPath = path.join(root, "analytics", "analytics.php");
+const analyticsScriptPath = path.join(root, "js", "analytics.js");
 
 function readPage(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -86,6 +90,38 @@ test("describes the list as configuration rather than a human checklist", () => 
   assert.match(manifest, /This manifest configures how an analysis agent/);
   assert.match(approach, /manifest configuration/);
   assert.doesNotMatch(approach, /operational checklist|review prompts/i);
+});
+
+test("has a server-side analytics endpoint and dashboard", () => {
+  assert.equal(fs.existsSync(trackerPath), true);
+  assert.equal(fs.existsSync(dashboardPath), true);
+  assert.equal(fs.existsSync(analyticsPath), true);
+});
+
+test("tracks only the agent manifest page", () => {
+  assert.match(readPage(criteriaPath), /<script src="\/js\/analytics\.js" defer><\/script>/);
+  assert.doesNotMatch(readPage(homepagePath), /analytics\.js/);
+  assert.doesNotMatch(readPage(approachPath), /analytics\.js/);
+
+  const script = readPage(analyticsScriptPath);
+  assert.match(script, /\/dstl-method-criteria\//);
+  assert.doesNotMatch(script, /localStorage|visitor[_-]id/i);
+});
+
+test("requires server secrets without shipping a fallback password", () => {
+  const backend = `${readPage(analyticsPath)}\n${readPage(dashboardPath)}\n${readPage(trackerPath)}`;
+
+  assert.match(backend, /ANALYTICS_PASSWORD_HASH/);
+  assert.match(backend, /ANALYTICS_HASH_KEY/);
+  assert.doesNotMatch(backend, /password[^\n]{0,40}(default|fallback)/i);
+});
+
+test("keeps analytics data and deployment secrets out of git", () => {
+  const ignore = readPage(path.join(root, ".gitignore"));
+
+  assert.match(ignore, /^\.env$/m);
+  assert.match(ignore, /^analytics\/\.analytics-data\.php/m);
+  assert.match(ignore, /^analytics\/\.analytics-data\.php\.lock$/m);
 });
 
 test("publishes all 62 rules once", () => {
