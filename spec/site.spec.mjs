@@ -14,7 +14,6 @@ const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
 const analyticsPath = path.join(root, "analytics", "analytics.php");
 const analyticsScriptPath = path.join(root, "js", "analytics.js");
-const linkedinImagePath = path.join(root, "img", "linkedin.png");
 const analyticsSetupPath = path.join(root, "analytics", "configure.php");
 
 function readPage(filePath) {
@@ -113,23 +112,12 @@ test("describes the list as configuration rather than a human checklist", () => 
   assert.doesNotMatch(approach, /operational checklist|review prompts/i);
 });
 
-test("offers a LinkedIn route from both page introductions", () => {
-  assert.equal(fs.existsSync(linkedinImagePath), true);
-
-  for (const pagePath of [manifestPath, approachPath]) {
-    const page = readPage(pagePath);
-    assert.match(page, /I design and deploy research systems\./);
-    assert.match(page, /href="https:\/\/www\.linkedin\.com\/in\/geojensen\/"/);
-    assert.match(page, /src="\/img\/linkedin\.png"/);
-    assert.match(page, /target="_blank" rel="noopener noreferrer"/);
-    assert.doesNotMatch(page, /contact-cta|contact\.js|data-copy-email|mailto:/);
-  }
-});
-
-test("does not publish an email contact route", () => {
+test("leaves contact promotion out until its placement is resolved", () => {
   const publishedPages = [readPage(manifestPath), readPage(approachPath)].join("\n");
 
+  assert.doesNotMatch(publishedPages, /profile-contact|linkedin\.com|linkedin\.png/i);
   assert.doesNotMatch(publishedPages, /geo\s*@|Copy email address|Email George/i);
+  assert.equal(fs.existsSync(path.join(root, "img", "linkedin.png")), false);
   assert.equal(fs.existsSync(path.join(root, "js", "contact.js")), false);
 });
 
