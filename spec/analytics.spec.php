@@ -61,7 +61,7 @@ expectAnalyticsTrue(
 );
 expectAnalyticsSame(
     '$2y$10$new-hash',
-    normalizeAnalyticsSetting("'$2y$10$new-hash'"),
+    normalizeAnalyticsSetting("'" . '$2y$10$new-hash' . "'"),
     'Quoted environment values normalize before use.',
 );
 expectAnalyticsSame(
