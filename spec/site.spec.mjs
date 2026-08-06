@@ -25,13 +25,19 @@ test("publishes the approach at a stable subpage", () => {
   assert.equal(fs.existsSync(approachPath), true);
 });
 
-test("links to the criteria from the public homepage", () => {
-  assert.match(readPage(homepagePath), /href="\/dstl-method-criteria\/"/);
+test("links to the manifest from the public homepage", () => {
+  const homepage = readPage(homepagePath);
+
+  assert.match(homepage, /href="\/dstl-method-criteria\/"/);
+  assert.match(homepage, /Qualitative Analysis Agent Manifest/);
 });
 
-test("links the checklist and its approach in both directions", () => {
-  assert.match(readPage(criteriaPath), /href="\/qualitative-concept-analysis\/"/);
-  assert.match(readPage(approachPath), /href="\/dstl-method-criteria\/"/);
+test("links the manifest and its approach in both directions", () => {
+  const manifest = readPage(criteriaPath);
+  const approach = readPage(approachPath);
+
+  assert.match(manifest, /href="\/qualitative-concept-analysis\/">How this manifest is used/);
+  assert.match(approach, /href="\/dstl-method-criteria\/">View the 62-rule agent manifest/);
 });
 
 test("answers the four orienting questions", () => {
@@ -48,29 +54,38 @@ test("states the operation, output, governance, and authorship", () => {
   const page = readPage(approachPath);
 
   assert.match(page, /qualitative interview transcripts/);
-  assert.match(page, /reviewable collection of concept records/);
-  assert.match(page, /AI can propose records and reasoning, but named researchers decide what is accepted/);
-  assert.match(page, /current formulation was created by George Jensen/);
+  assert.match(page, /configured agent proposes separations/);
+  assert.match(page, /reviewable collection of evidence-linked concept proposals/);
+  assert.match(page, /named researchers review the proposals and decide what is accepted/);
+  assert.match(page, /manifest’s current formulation was created by George Jensen/);
   assert.match(page, /does not represent her method or imply her endorsement/);
 });
 
-test("introduces the page to people who were not in the room", () => {
+test("introduces the manifest to people who were not in the room", () => {
   const page = readPage(criteriaPath);
 
-  assert.match(page, /<title>DStL Method Criteria — Quick Reference \| ResearchOps\.ai<\/title>/);
+  assert.match(
+    page,
+    /<title>Qualitative Transcript Concept Rules — Agent Manifest \| ResearchOps\.ai<\/title>/,
+  );
   assert.match(page, /<meta name="viewport"/);
-  assert.match(page, /review prompts/i);
+  assert.match(page, /<p class="eyebrow">Agent manifest configuration<\/p>/);
+  assert.match(page, /<h1>Qualitative transcript concept rules<\/h1>/);
   assert.match(
     page,
-    /support researcher judgment when turning qualitative interview transcripts into concept records and summaries/,
+    /Sixty-two configuration rules governing how an analysis agent turns qualitative interview transcripts into evidence-linked concept proposals\./,
   );
-  assert.match(page, /not automatic verdicts/i);
-  assert.match(page, /<p class="eyebrow">Operational checklist<\/p>/);
-  assert.match(
-    page,
-    /This is an operational checklist informed by study of Indi Young’s methods—not course material or a substitute for those methods\./,
-  );
-  assert.doesNotMatch(page, /DStL’s public operational checklist/);
+  assert.match(page, /named researchers review them and decide what is accepted/);
+  assert.doesNotMatch(page, /\bprompts?\b|operational checklist/i);
+});
+
+test("describes the list as configuration rather than a human checklist", () => {
+  const manifest = readPage(criteriaPath);
+  const approach = readPage(approachPath);
+
+  assert.match(manifest, /This manifest configures how an analysis agent/);
+  assert.match(approach, /manifest configuration/);
+  assert.doesNotMatch(approach, /operational checklist|review prompts/i);
 });
 
 test("publishes all 62 rules once", () => {
