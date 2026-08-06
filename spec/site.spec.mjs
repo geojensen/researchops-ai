@@ -14,6 +14,7 @@ const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
 const analyticsPath = path.join(root, "analytics", "analytics.php");
 const analyticsScriptPath = path.join(root, "js", "analytics.js");
+const contactScriptPath = path.join(root, "js", "contact.js");
 const analyticsSetupPath = path.join(root, "analytics", "configure.php");
 
 function readPage(filePath) {
@@ -97,7 +98,7 @@ test("introduces the manifest to people who were not in the room", () => {
   assert.match(page, /<h1>Qualitative transcript concept rules<\/h1>/);
   assert.match(
     page,
-    /Sixty-two configuration rules governing how an analysis agent turns qualitative interview transcripts into evidence-linked concept proposals\./,
+    /Sixty-two rules for governing interpretive bias in qualitative analysis: every interpretation the agent proposes stays tied to exact interview evidence, giving the researcher a clear basis for review\./,
   );
   assert.match(page, /named researchers review them and decide what is accepted/);
   assert.doesNotMatch(page, /\bprompts?\b|operational checklist/i);
@@ -110,6 +111,26 @@ test("describes the list as configuration rather than a human checklist", () => 
   assert.match(manifest, /This manifest configures how an analysis agent/);
   assert.match(approach, /manifest configuration/);
   assert.doesNotMatch(approach, /operational checklist|review prompts/i);
+});
+
+test("invites readers of both pages to design a governed research system", () => {
+  const sentence = /Let me help you design and deploy an AI-assisted research system grounded in established qualitative methods, with source evidence visible and the researcher in control\./;
+
+  for (const pagePath of [manifestPath, approachPath]) {
+    const page = readPage(pagePath);
+    assert.match(page, sentence);
+    assert.match(page, /Email George at ResearchOps\.ai/);
+    assert.match(page, /<script src="\/js\/contact\.js" defer><\/script>/);
+  }
+});
+
+test("reveals the contact address only when a reader asks to email", () => {
+  const contact = readPage(contactScriptPath);
+  const publishedSource = [readPage(manifestPath), readPage(approachPath), contact].join("\n");
+
+  assert.match(contact, /String\.fromCharCode/);
+  assert.match(contact, /mailto:/);
+  assert.doesNotMatch(publishedSource, /geo\s*@\s*researchops\.ai|@researchops\.ai/i);
 });
 
 test("has a server-side analytics endpoint, dashboard, and safe setup command", () => {
@@ -133,6 +154,14 @@ test("tracks only the agent manifest page", () => {
   assert.match(script, /\/qualitative-analysis-agent-manifest\//);
   assert.doesNotMatch(script, /\/dstl-method-criteria\//);
   assert.doesNotMatch(script, /localStorage|visitor[_-]id/i);
+});
+
+test("excludes a browser from tracking after its administrator signs in", () => {
+  const dashboard = readPage(dashboardPath);
+  const tracker = readPage(trackerPath);
+
+  assert.match(dashboard, /setcookie\('researchops_analytics_exclude', '1'/);
+  assert.match(tracker, /\$_COOKIE\['researchops_analytics_exclude'\]/);
 });
 
 test("requires server secrets without shipping a fallback password", () => {

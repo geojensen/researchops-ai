@@ -257,6 +257,53 @@ h1 {
     max-width: 800px;
 }
 
+.contact-cta {
+    margin-top: 120px;
+    padding: clamp(32px, 6vw, 72px);
+    color: #ffffff;
+    background: var(--ink);
+}
+
+.contact-cta .eyebrow {
+    color: #ff9b97;
+}
+
+.contact-cta h2 {
+    max-width: 760px;
+    margin-bottom: 18px;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -0.045em;
+    line-height: 1;
+}
+
+.contact-cta > p:not(.eyebrow) {
+    max-width: 780px;
+    color: #e6e3dc;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+}
+
+.contact-cta button {
+    margin-top: 18px;
+    padding: 14px 18px;
+    color: var(--ink);
+    background: var(--accent);
+    border: 0;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.contact-cta button:hover,
+.contact-cta button:focus-visible {
+    background: #ffffff;
+}
+
+.contact-cta noscript p {
+    margin: 16px 0 0;
+    color: #c6c2ba;
+    font-size: 0.82rem;
+}
+
 footer {
     display: flex;
     margin-top: 120px;
