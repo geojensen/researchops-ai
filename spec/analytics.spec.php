@@ -47,6 +47,19 @@ expectAnalyticsSame(3, $summary['today']['views'], 'The dashboard receives today
 expectAnalyticsSame(3, $summary['views7'], 'The seven-day total includes today.');
 expectAnalyticsSame(14, count($summary['history']), 'The dashboard always receives fourteen chart days.');
 
+$environment = replaceAnalyticsEnvironmentSettings(
+    "EXISTING=value\nANALYTICS_PASSWORD_HASH='old'\nANALYTICS_HASH_KEY='old-key'\n",
+    '$2y$10$new-hash',
+    'new-key',
+);
+expectAnalyticsTrue(str_contains($environment, "EXISTING=value"), 'Unrelated environment settings survive configuration.');
+expectAnalyticsSame(1, substr_count($environment, 'ANALYTICS_PASSWORD_HASH='), 'The password hash is replaced once.');
+expectAnalyticsSame(1, substr_count($environment, 'ANALYTICS_HASH_KEY='), 'The fingerprint key is replaced once.');
+expectAnalyticsTrue(
+    str_contains($environment, "ANALYTICS_PASSWORD_HASH='" . '$2y$10$new-hash' . "'"),
+    'The replacement hash keeps its dollar signs.',
+);
+
 $directory = sys_get_temp_dir() . '/researchops-analytics-' . bin2hex(random_bytes(6));
 $path = $directory . '/data.php';
 updateAnalyticsState(

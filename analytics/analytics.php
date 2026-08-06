@@ -41,6 +41,29 @@ function resolveAnalyticsDataPath(): string
     return readAnalyticsSetting('ANALYTICS_DATA_PATH') ?? __DIR__ . '/.analytics-data.php';
 }
 
+function replaceAnalyticsEnvironmentSettings(
+    string $contents,
+    string $passwordHash,
+    string $hashKey,
+): string {
+    if (str_contains($passwordHash, "\n") || str_contains($passwordHash, "'") || strlen($hashKey) < 32) {
+        throw new InvalidArgumentException('Analytics settings have an invalid shape.');
+    }
+
+    $cleaned = preg_replace(
+        '/^ANALYTICS_(PASSWORD_HASH|HASH_KEY)=.*(?:\R|$)/m',
+        '',
+        $contents,
+    );
+    if (!is_string($cleaned)) {
+        throw new RuntimeException('Analytics settings could not be replaced.');
+    }
+
+    return rtrim($cleaned) . "\n\n"
+        . "ANALYTICS_PASSWORD_HASH='" . $passwordHash . "'\n"
+        . "ANALYTICS_HASH_KEY='" . $hashKey . "'\n";
+}
+
 function createEmptyAnalyticsState(): array
 {
     return ['summary' => [], 'recent' => []];

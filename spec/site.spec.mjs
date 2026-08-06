@@ -12,6 +12,7 @@ const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
 const analyticsPath = path.join(root, "analytics", "analytics.php");
 const analyticsScriptPath = path.join(root, "js", "analytics.js");
+const analyticsSetupPath = path.join(root, "analytics", "configure.php");
 
 function readPage(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -92,10 +93,16 @@ test("describes the list as configuration rather than a human checklist", () => 
   assert.doesNotMatch(approach, /operational checklist|review prompts/i);
 });
 
-test("has a server-side analytics endpoint and dashboard", () => {
+test("has a server-side analytics endpoint, dashboard, and safe setup command", () => {
   assert.equal(fs.existsSync(trackerPath), true);
   assert.equal(fs.existsSync(dashboardPath), true);
   assert.equal(fs.existsSync(analyticsPath), true);
+  assert.equal(fs.existsSync(analyticsSetupPath), true);
+
+  const setup = readPage(analyticsSetupPath);
+  assert.match(setup, /Confirm analytics password/);
+  assert.match(setup, /stty -echo/);
+  assert.doesNotMatch(setup, /\$argv\[1\]/);
 });
 
 test("tracks only the agent manifest page", () => {
