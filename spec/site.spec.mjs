@@ -109,10 +109,12 @@ test("tracks only the agent manifest page", () => {
 });
 
 test("requires server secrets without shipping a fallback password", () => {
-  const backend = `${readPage(analyticsPath)}\n${readPage(dashboardPath)}\n${readPage(trackerPath)}`;
+  const analytics = readPage(analyticsPath);
+  const backend = `${analytics}\n${readPage(dashboardPath)}\n${readPage(trackerPath)}`;
 
   assert.match(backend, /ANALYTICS_PASSWORD_HASH/);
   assert.match(backend, /ANALYTICS_HASH_KEY/);
+  assert.match(analytics, /dirname\(__DIR__, 2\) \. '\/\.env'/);
   assert.doesNotMatch(backend, /password[^\n]{0,40}(default|fallback)/i);
 });
 

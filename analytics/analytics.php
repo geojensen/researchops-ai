@@ -18,10 +18,17 @@ function readAnalyticsSetting(string $key): ?string
 
     static $fileSettings;
     if ($fileSettings === null) {
-        $path = dirname(__DIR__) . '/.env';
-        $fileSettings = file_exists($path)
-            ? (parse_ini_file($path, false, INI_SCANNER_RAW) ?: [])
-            : [];
+        $fileSettings = [];
+        $paths = array_unique([
+            dirname(__DIR__) . '/.env',
+            dirname(__DIR__, 2) . '/.env',
+        ]);
+        foreach ($paths as $path) {
+            if (file_exists($path)) {
+                $fileSettings = parse_ini_file($path, false, INI_SCANNER_RAW) ?: [];
+                break;
+            }
+        }
     }
 
     return isset($fileSettings[$key]) && trim((string) $fileSettings[$key]) !== ''
