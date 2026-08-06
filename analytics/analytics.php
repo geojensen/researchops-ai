@@ -65,12 +65,17 @@ function readAnalyticsState(string $path): array
     return $decoded;
 }
 
-function writeAnalyticsState(string $path, array $state): void
+function ensureAnalyticsDataDirectory(string $path): void
 {
     $directory = dirname($path);
     if (!is_dir($directory) && !mkdir($directory, 0700, true) && !is_dir($directory)) {
         throw new RuntimeException('Analytics data directory could not be created.');
     }
+}
+
+function writeAnalyticsState(string $path, array $state): void
+{
+    ensureAnalyticsDataDirectory($path);
 
     $payload = ANALYTICS_DATA_PREFIX . json_encode(
         $state,
@@ -91,6 +96,7 @@ function writeAnalyticsState(string $path, array $state): void
 
 function updateAnalyticsState(string $path, callable $update): array
 {
+    ensureAnalyticsDataDirectory($path);
     $lockPath = $path . '.lock';
     $lock = fopen($lockPath, 'c');
     if ($lock === false || !flock($lock, LOCK_EX)) {
