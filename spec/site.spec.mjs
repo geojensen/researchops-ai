@@ -31,6 +31,12 @@ test("introduces the page to people who were not in the room", () => {
   assert.match(page, /<meta name="viewport"/);
   assert.match(page, /review prompts/i);
   assert.match(page, /not automatic verdicts/i);
+  assert.match(page, /<p class="eyebrow">Operational checklist<\/p>/);
+  assert.match(
+    page,
+    /This is an operational checklist informed by study of Indi Young’s methods—not course material or a substitute for those methods\./,
+  );
+  assert.doesNotMatch(page, /DStL’s public operational checklist/);
 });
 
 test("publishes all 62 rules once", () => {
