@@ -50,7 +50,7 @@ expectAnalyticsSame(14, count($summary['history']), 'The dashboard always receiv
 $environment = replaceAnalyticsEnvironmentSettings(
     "EXISTING=value\nANALYTICS_PASSWORD_HASH='old'\nANALYTICS_HASH_KEY='old-key'\n",
     '$2y$10$new-hash',
-    'new-key',
+    str_repeat('a', 64),
 );
 expectAnalyticsTrue(str_contains($environment, "EXISTING=value"), 'Unrelated environment settings survive configuration.');
 expectAnalyticsSame(1, substr_count($environment, 'ANALYTICS_PASSWORD_HASH='), 'The password hash is replaced once.');
