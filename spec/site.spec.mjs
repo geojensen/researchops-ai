@@ -120,6 +120,7 @@ test("invites readers of both pages to design a governed research system", () =>
     const page = readPage(pagePath);
     assert.match(page, sentence);
     assert.match(page, /Email George at ResearchOps\.ai/);
+    assert.match(page, /data-email-address/);
     assert.match(page, /<script src="\/js\/contact\.js" defer><\/script>/);
   }
 });
@@ -129,6 +130,7 @@ test("reveals the contact address only when a reader asks to email", () => {
   const publishedSource = [readPage(manifestPath), readPage(approachPath), contact].join("\n");
 
   assert.match(contact, /String\.fromCharCode/);
+  assert.match(contact, /addressLabel\.textContent = address/);
   assert.match(contact, /mailto:/);
   assert.doesNotMatch(publishedSource, /geo\s*@\s*researchops\.ai|@researchops\.ai/i);
 });

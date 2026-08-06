@@ -3,8 +3,11 @@
     const subject = "Research system design";
 
     for (const button of document.querySelectorAll("[data-email-contact]")) {
+        const address = String.fromCharCode(...addressCodes);
+        const addressLabel = button.querySelector("[data-email-address]");
+        if (addressLabel) addressLabel.textContent = address;
+
         button.addEventListener("click", () => {
-            const address = String.fromCharCode(...addressCodes);
             window.location.href = `mailto:${address}?subject=${encodeURIComponent(subject)}`;
         });
     }
