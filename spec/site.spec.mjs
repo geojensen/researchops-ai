@@ -14,7 +14,7 @@ const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
 const analyticsPath = path.join(root, "analytics", "analytics.php");
 const analyticsScriptPath = path.join(root, "js", "analytics.js");
-const contactScriptPath = path.join(root, "js", "contact.js");
+const linkedinImagePath = path.join(root, "img", "linkedin.png");
 const analyticsSetupPath = path.join(root, "analytics", "configure.php");
 
 function readPage(filePath) {
@@ -113,26 +113,24 @@ test("describes the list as configuration rather than a human checklist", () => 
   assert.doesNotMatch(approach, /operational checklist|review prompts/i);
 });
 
-test("invites readers of both pages to design a governed research system", () => {
-  const sentence = /Let me help you design and deploy an AI-assisted research system grounded in established qualitative methods, with source evidence visible and the researcher in control\./;
+test("offers a LinkedIn route from both page introductions", () => {
+  assert.equal(fs.existsSync(linkedinImagePath), true);
 
   for (const pagePath of [manifestPath, approachPath]) {
     const page = readPage(pagePath);
-    assert.match(page, sentence);
-    assert.match(page, /Email George at ResearchOps\.ai/);
-    assert.match(page, /data-email-address/);
-    assert.match(page, /<script src="\/js\/contact\.js" defer><\/script>/);
+    assert.match(page, /I design and deploy research systems\./);
+    assert.match(page, /href="https:\/\/www\.linkedin\.com\/in\/geojensen\/"/);
+    assert.match(page, /src="\/img\/linkedin\.png"/);
+    assert.match(page, /target="_blank" rel="noopener noreferrer"/);
+    assert.doesNotMatch(page, /contact-cta|contact\.js|data-copy-email|mailto:/);
   }
 });
 
-test("reveals the contact address only when a reader asks to email", () => {
-  const contact = readPage(contactScriptPath);
-  const publishedSource = [readPage(manifestPath), readPage(approachPath), contact].join("\n");
+test("does not publish an email contact route", () => {
+  const publishedPages = [readPage(manifestPath), readPage(approachPath)].join("\n");
 
-  assert.match(contact, /String\.fromCharCode/);
-  assert.match(contact, /addressLabel\.textContent = address/);
-  assert.match(contact, /mailto:/);
-  assert.doesNotMatch(publishedSource, /geo\s*@\s*researchops\.ai|@researchops\.ai/i);
+  assert.doesNotMatch(publishedPages, /geo\s*@|Copy email address|Email George/i);
+  assert.equal(fs.existsSync(path.join(root, "js", "contact.js")), false);
 });
 
 test("has a server-side analytics endpoint, dashboard, and safe setup command", () => {
