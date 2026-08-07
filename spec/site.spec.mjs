@@ -64,25 +64,27 @@ test("links the manifest and its approach in both directions", () => {
   );
 });
 
-test("answers the four orienting questions", () => {
+test("answers the five quote-to-concept questions", () => {
   const page = readPage(approachPath);
 
-  assert.match(page, /<h1>Evidence-linked qualitative concept analysis<\/h1>/);
-  assert.match(page, /<h2>What method is this\?<\/h2>/);
-  assert.match(page, /<h2>What do people get out of it\?<\/h2>/);
-  assert.match(page, /<h2>What role does George Jensen play\?<\/h2>/);
+  assert.match(page, /<h1>How the quote-to-concept manifest is used<\/h1>/);
+  assert.match(page, /<h2>What does it govern\?<\/h2>/);
+  assert.match(page, /<h2>What does it produce\?<\/h2>/);
+  assert.match(page, /<h2>What happens next\?<\/h2>/);
+  assert.match(page, /<h2>Who decides\?<\/h2>/);
   assert.match(page, /<h2>Who created it\?<\/h2>/);
 });
 
-test("states the operation, output, governance, and authorship", () => {
+test("states the quote-to-concept operation, handoff, governance, and authorship", () => {
   const page = readPage(approachPath);
 
-  assert.match(page, /qualitative interview transcripts/);
-  assert.match(page, /configured agent proposes separations/);
-  assert.match(page, /reviewable collection of evidence-linked concept proposals/);
-  assert.match(page, /named researchers review the proposals and decide what is accepted/);
-  assert.match(page, /manifest’s current formulation was created by George Jensen/);
-  assert.match(page, /does not represent her method or imply her endorsement/);
+  assert.match(page, /governs the quote-to-concept stage/);
+  assert.match(page, /one verb-forward concept summary/);
+  assert.match(page, /Keeping the interpretation beside its evidence does not eliminate interpretation or bias/);
+  assert.match(page, /separately approved manifests/);
+  assert.match(page, /Manifest approval authorizes the analytical instructions—not the resulting records or findings/);
+  assert.match(page, /George Jensen created and maintains the current manifest configuration/);
+  assert.match(page, /does not represent Indi Young’s method or imply her endorsement/);
 });
 
 test("introduces the manifest to people who were not in the room", () => {
@@ -97,17 +99,33 @@ test("introduces the manifest to people who were not in the room", () => {
   assert.match(page, /<h1>Qualitative transcript concept rules<\/h1>/);
   assert.match(
     page,
-    /Sixty-two rules for governing interpretive bias in qualitative analysis: every interpretation the agent proposes stays tied to exact interview evidence, giving the researcher a clear basis for review\./,
+    /Sixty-two rules for turning interview quotations into verb-forward, participant-centered concept records that remain tied to exact transcript evidence\./,
   );
-  assert.match(page, /named researchers review them and decide what is accepted/);
+  assert.match(page, /This manifest governs one stage of qualitative analysis/);
   assert.doesNotMatch(page, /\bprompts?\b|operational checklist/i);
+});
+
+test("states the manifest scope before presenting the rules", () => {
+  const page = readPage(manifestPath);
+  const scopePosition = page.indexOf('<section class="scope-boundary" id="scope"');
+  const rulesPosition = page.indexOf('<nav class="group-index"');
+
+  assert.ok(scopePosition > -1);
+  assert.ok(scopePosition < rulesPosition);
+  assert.match(page, /Turn transcript quotations into verb-forward, participant-centered, evidence-linked concept records for researcher review\./);
+  assert.match(page, /Cross-participant grouping/);
+  assert.match(page, /Thinking Style formation/);
+  assert.match(page, /Mental Model Skyline towers/);
+  assert.match(page, /Themes or research findings/);
+  assert.match(page, /Product requirements/);
+  assert.match(page, /Recommendations/);
 });
 
 test("describes the list as configuration rather than a human checklist", () => {
   const manifest = readPage(manifestPath);
   const approach = readPage(approachPath);
 
-  assert.match(manifest, /This manifest configures how an analysis agent/);
+  assert.match(manifest, /It configures how an agent handles boundaries/);
   assert.match(approach, /manifest configuration/);
   assert.doesNotMatch(approach, /operational checklist|review prompts/i);
 });
