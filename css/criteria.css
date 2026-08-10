@@ -142,12 +142,6 @@ h1 {
     color: var(--accent-dark);
 }
 
-.page-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px 28px;
-}
-
 .totals {
     display: flex;
     gap: 16px;

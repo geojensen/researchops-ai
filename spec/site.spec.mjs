@@ -47,6 +47,10 @@ test("offers the complete agent manifest as a Markdown download", () => {
     page,
     /<a href="\.\/qualitative-analysis-agent-manifest\.md" download>Download agent manifest \(\.md\)<\/a>/,
   );
+  assert.match(
+    page,
+    /How this manifest is used →<\/a>\s+\|\s+<a href="\.\/qualitative-analysis-agent-manifest\.md"/,
+  );
 
   const markdown = readPage(manifestDownloadPath);
   assert.equal(markdown, renderManifestMarkdown(page));
