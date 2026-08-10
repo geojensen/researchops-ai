@@ -4,9 +4,16 @@ import path from "node:path";
 import {fileURLToPath} from "node:url";
 import {test} from "node:test";
 
+import {renderManifestMarkdown} from "../qualitative-analysis-agent-manifest/download.mjs";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const homepagePath = path.join(root, "index.html");
 const manifestPath = path.join(root, "qualitative-analysis-agent-manifest", "index.html");
+const manifestDownloadPath = path.join(
+  root,
+  "qualitative-analysis-agent-manifest",
+  "qualitative-analysis-agent-manifest.md",
+);
 const legacyManifestPath = path.join(root, "dstl-method-criteria", "index.php");
 const legacyManifestHtmlPath = path.join(root, "dstl-method-criteria", "index.html");
 const approachPath = path.join(root, "qualitative-concept-analysis", "index.html");
@@ -30,6 +37,33 @@ test("publishes the manifest at its unbranded route", () => {
     readPage(manifestPath),
     /<link rel="canonical" href="https:\/\/researchops\.ai\/qualitative-analysis-agent-manifest\/">/,
   );
+});
+
+test("offers the complete agent manifest as a Markdown download", () => {
+  assert.equal(fs.existsSync(manifestDownloadPath), true);
+
+  const page = readPage(manifestPath);
+  assert.match(
+    page,
+    /<a href="\.\/qualitative-analysis-agent-manifest\.md" download>Download agent manifest \(\.md\)<\/a>/,
+  );
+
+  const markdown = readPage(manifestDownloadPath);
+  assert.equal(markdown, renderManifestMarkdown(page));
+
+  const pageRules = [...page.matchAll(
+    /<li\s+data-rule-id="([^"]+)"><b>([^<]+)<\/b><span>([^<]+)<\/span><\/li>/g,
+  )].map((match) => ({id: match[1], code: match[2], instruction: match[3]}));
+
+  assert.match(markdown, /^# Qualitative transcript concept rules$/m);
+  assert.match(markdown, /^## Scope$/m);
+  assert.equal(pageRules.length, 62);
+  for (const rule of pageRules) {
+    assert.equal(
+      markdown.includes(`- **${rule.code}** (${rule.id}): ${rule.instruction}\n`),
+      true,
+    );
+  }
 });
 
 test("redirects the branded legacy route without retaining a duplicate page", () => {
@@ -114,8 +148,8 @@ test("states the manifest scope before presenting the rules", () => {
   assert.ok(scopePosition < rulesPosition);
   assert.match(page, /Turn transcript quotations into verb-forward, participant-centered, evidence-linked concept records for researcher review\./);
   assert.match(page, /Cross-participant grouping/);
-  assert.match(page, /Thinking Style formation/);
-  assert.match(page, /Mental Model Skyline towers/);
+  assert.doesNotMatch(page, /Thinking Style formation/);
+  assert.doesNotMatch(page, /Mental Model Skyline towers/);
   assert.match(page, /Themes or research findings/);
   assert.match(page, /Product requirements/);
   assert.match(page, /Recommendations/);
