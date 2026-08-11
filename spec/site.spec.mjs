@@ -56,8 +56,12 @@ test("offers the complete agent manifest as a Markdown download", () => {
   assert.equal(markdown, renderManifestMarkdown(page));
 
   const pageRules = [...page.matchAll(
-    /<li\s+data-rule-id="([^"]+)"><b>([^<]+)<\/b><span>([^<]+)<\/span><\/li>/g,
-  )].map((match) => ({id: match[1], code: match[2], instruction: match[3]}));
+    /<li\s+data-rule-id="([^"]+)">([\s\S]*?)<\/li>/g,
+  )].map((match) => ({
+    id: match[1],
+    code: match[2].match(/<b>([^<]+)<\/b>/)[1],
+    instruction: match[2].match(/<span>([^<]+)<\/span>/)[1],
+  }));
 
   assert.match(markdown, /^# Qualitative transcript concept rules$/m);
   assert.match(markdown, /^## Scope$/m);
@@ -67,6 +71,29 @@ test("offers the complete agent manifest as a Markdown download", () => {
       markdown.includes(`- **${rule.code}** (${rule.id}): ${rule.instruction}\n`),
       true,
     );
+  }
+});
+
+test("publishes the complete words-to-try palettes on the page and in the download", () => {
+  const published = [
+    readPage(manifestPath).replace(/<[^>]+>/g, ""),
+    readPage(manifestDownloadPath),
+  ];
+  const palettes = [
+    "accept, acknowledge, adopt, agree, anticipate, assume, avoid, choose, decide, deliberate, ensure, figure out, forgive, justify, make sure, plan, ponder, promise, realize, recognize, struggle, suspect, think, weigh, wonder",
+    "adore, appreciate, crack up, cry out, distrust, enjoy, envy, fear, hope, light up, marvel, panic, reel, tear up, worry",
+    "Surprised — startled, confused, amazed, excited, shocked, dismayed, disillusioned, perplexed",
+    "about, after, although, as if, at, because, before, besides, beyond, by, despite, due to, even though, except, from, if, including, instead of, like, past, since, so that, that, through, when, whereas, while, who",
+    "Vague — communicate, consider, deal with, do, expect, manage, organize, plan on, use",
+    "Passive — be, discover, experience, find, get, have, hear, know, let, need, observe, read",
+    "Exterior — approve, believe, explain, feel like, feel that, hate, judge, like, love, prefer, want",
+    "Session mode — compare, complain, critique, remember",
+  ];
+
+  for (const output of published) {
+    for (const palette of palettes) {
+      assert.equal(output.includes(palette), true);
+    }
   }
 });
 

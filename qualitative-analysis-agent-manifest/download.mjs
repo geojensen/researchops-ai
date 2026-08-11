@@ -35,11 +35,16 @@ function findRuleGroups(page) {
     ([, section]) => {
       const header = findMarkup(section, /<header>([\s\S]*?)<\/header>/, "rule group header");
       const rules = [...section.matchAll(
-        /<li\s+data-rule-id="([^"]+)"><b>([^<]+)<\/b><span>([^<]+)<\/span><\/li>/g,
-      )].map(([, id, code, instruction]) => ({
+        /<li\s+data-rule-id="([^"]+)">([\s\S]*?)<\/li>/g,
+      )].map(([, id, rule]) => ({
         id,
-        code: decodeText(code),
-        instruction: decodeText(instruction),
+        code: decodeText(findMarkup(rule, /<b>([\s\S]*?)<\/b>/, `${id} code`)),
+        instruction: decodeText(
+          findMarkup(rule, /<span>([\s\S]*?)<\/span>/, `${id} instruction`),
+        ),
+        palettes: [...rule.matchAll(
+          /<p class="word-palette">([\s\S]*?)<\/p>/g,
+        )].map(([, palette]) => decodeText(palette)),
       }));
 
       return {
@@ -113,11 +118,10 @@ export function renderManifestMarkdown(page) {
 
   for (const group of groups) {
     lines.push("", `### ${group.title}`, "", group.description, "");
-    lines.push(
-      ...group.rules.map(
-        (rule) => `- **${rule.code}** (${rule.id}): ${rule.instruction}`,
-      ),
-    );
+    for (const rule of group.rules) {
+      lines.push(`- **${rule.code}** (${rule.id}): ${rule.instruction}`);
+      lines.push(...rule.palettes.map((palette) => `  - ${palette}`));
+    }
   }
 
   return `${lines.join("\n")}\n`;

@@ -289,8 +289,26 @@ h1 {
     letter-spacing: 0.04em;
 }
 
-.rules span {
+.rule-copy {
     max-width: 800px;
+}
+
+.rules span {
+    display: block;
+}
+
+.word-palette {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.word-palette + .word-palette {
+    margin-top: 6px;
+}
+
+.word-palette strong {
+    color: var(--ink);
 }
 
 footer {

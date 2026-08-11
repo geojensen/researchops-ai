@@ -45,10 +45,19 @@ What makes a candidate admissible and a summary faithful.
 Rules for widening the field, never a controlled vocabulary.
 
 - **WP-001** (IY-EDS-WP-001): Search for a verb that names the participant’s thought process.
+  - Thought-process verbs: accept, acknowledge, adopt, agree, anticipate, assume, avoid, choose, decide, deliberate, ensure, figure out, forgive, justify, make sure, plan, ponder, promise, realize, recognize, struggle, suspect, think, weigh, wonder, and others.
 - **WP-002** (IY-EDS-WP-002): Express emotional reactions with “feel + emotion” or a verb that already carries the emotion.
+  - Emotion-carrying verbs: adore, appreciate, crack up, cry out, distrust, enjoy, envy, fear, hope, light up, marvel, panic, reel, tear up, worry, and others.
 - **WP-003** (IY-EDS-WP-003): Brainstorm several emotions and move from a general label to the most specific one supported.
+  - Specificity example: Surprised — startled, confused, amazed, excited, shocked, dismayed, disillusioned, perplexed.
 - **WP-004** (IY-EDS-WP-004): Attach supporting details as phrases rather than adding a second sentence.
+  - Connectors: about, after, although, as if, at, because, before, besides, beyond, by, despite, due to, even though, except, from, if, including, instead of, like, past, since, so that, that, through, when, whereas, while, who.
+  - Use cautiously: “and” and “or” can invite a second sentence.
 - **WP-005** (IY-EDS-WP-005): Treat vague, passive, exterior, and session-mode verbs as warning signs rather than banned words.
+  - Vague — communicate, consider, deal with, do, expect, manage, organize, plan on, use.
+  - Passive — be, discover, experience, find, get, have, hear, know, let, need, observe, read.
+  - Exterior — approve, believe, explain, feel like, feel that, hate, judge, like, love, prefer, want.
+  - Session mode — compare, complain, critique, remember.
 
 ### How the Work Goes
 
