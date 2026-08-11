@@ -17,7 +17,7 @@ Turn transcript quotations into verb-forward, participant-centered, evidence-lin
 - Product requirements
 - Recommendations
 
-George Jensen created and maintains this configuration through qualitative research practice and study. Indi Young’s work especially informed its formulation, but it does not represent her method or imply her endorsement.
+George Jensen created and maintains this configuration through qualitative research practice and study. Indi Young’s work especially informed its formulation, but it does not represent her method or imply her endorsement. To learn Thinking Styles from its source, explore training with Indi Young.
 
 ## Rules
 

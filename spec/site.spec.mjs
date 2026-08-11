@@ -49,7 +49,7 @@ test("offers the complete agent manifest as a Markdown download", () => {
   );
   assert.match(
     page,
-    /How this manifest is used →<\/a>\s+\|\s+<a href="\.\/qualitative-analysis-agent-manifest\.md"/,
+    /Download agent manifest \(\.md\)<\/a>\s+\|\s+<a href="\/qualitative-concept-analysis\/">How this manifest is used →<\/a>/,
   );
 
   const markdown = readPage(manifestDownloadPath);
@@ -168,6 +168,24 @@ test("introduces the manifest to people who were not in the room", () => {
   );
   assert.match(page, /This manifest governs one stage of qualitative analysis/);
   assert.doesNotMatch(page, /\bprompts?\b|operational checklist/i);
+});
+
+test("links to Indi Young and directs readers to training", () => {
+  const page = readPage(manifestPath);
+  const markdown = readPage(manifestDownloadPath);
+
+  assert.match(
+    page,
+    /<a href="https:\/\/indiyoung\.com" target="_blank" rel="noopener noreferrer">Indi Young’s<\/a>/,
+  );
+  assert.match(
+    page,
+    /To learn Thinking Styles from its source, explore training with Indi Young\./,
+  );
+  assert.match(
+    markdown,
+    /To learn Thinking Styles from its source, explore training with Indi Young\./,
+  );
 });
 
 test("states the manifest scope before presenting the rules", () => {
