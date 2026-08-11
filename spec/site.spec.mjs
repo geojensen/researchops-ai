@@ -167,6 +167,14 @@ test("introduces the manifest to people who were not in the room", () => {
     /Sixty-two rules for turning interview quotations into verb-forward, participant-centered concept records that remain tied to exact transcript evidence\./,
   );
   assert.match(page, /This manifest governs one stage of qualitative analysis/);
+  assert.match(
+    page,
+    /It is not intended as a shortcut around qualitative research or researcher judgment\./,
+  );
+  assert.match(
+    readPage(manifestDownloadPath),
+    /It is not intended as a shortcut around qualitative research or researcher judgment\./,
+  );
   assert.doesNotMatch(page, /\bprompts?\b|operational checklist/i);
 });
 

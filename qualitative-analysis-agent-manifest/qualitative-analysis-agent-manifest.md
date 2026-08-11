@@ -2,7 +2,7 @@
 
 Sixty-two rules for turning interview quotations into verb-forward, participant-centered concept records that remain tied to exact transcript evidence.
 
-This manifest governs one stage of qualitative analysis: selecting language that expresses what a participant was thinking, feeling, or guided by, separating distinct concepts, and drafting one verb-forward summary for each source-linked record. It configures how an agent handles boundaries, wording, cognition type, ambiguity, and failure conditions so a named researcher can inspect the quotation and proposed summary together.
+This manifest governs one stage of qualitative analysis: selecting language that expresses what a participant was thinking, feeling, or guided by, separating distinct concepts, and drafting one verb-forward summary for each source-linked record. It configures how an agent handles boundaries, wording, cognition type, ambiguity, and failure conditions so a named researcher can inspect the quotation and proposed summary together. It is not intended as a shortcut around qualitative research or researcher judgment.
 
 ## Scope
 
