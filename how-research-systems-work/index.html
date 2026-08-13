@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How Research Systems Work | ResearchOps.ai</title>
+    <meta name="description" content="Plain answers to the questions behind AI-assisted research analysis: why several agents, what deterministic means, what a trace is, and who approves the work.">
+    <link rel="canonical" href="https://researchops.ai/how-research-systems-work/">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.png">
+    <link rel="stylesheet" href="../css/criteria.css">
+    <link rel="stylesheet" href="../css/home.css">
+</head>
+<body id="top">
+<header class="site-header">
+    <a class="brand" href="/" aria-label="ResearchOps.ai home">
+        <img src="../img/logo.png" alt="ResearchOps.ai">
+    </a>
+</header>
+
+<main>
+    <header class="page-header">
+        <p class="eyebrow">How the work is built</p>
+        <h1>How research systems work</h1>
+        <p class="standfirst">The short version: the AI does the reading, ordinary software keeps the receipts, and a person decides what counts. This page explains what that means, and defines the words as they come up.</p>
+    </header>
+
+    <div class="answers">
+        <section class="answer">
+            <p class="answer-number">01</p>
+            <div>
+                <h2>Why several agents instead of one?</h2>
+                <p>Ask one AI to read a stack of interviews and hand back the findings, and you get a fluent summary with no way to check it. Everything happened in one step, out of sight.</p>
+                <p>Splitting the work fixes that. One agent finds passages where a participant describes their own thinking. Another drafts a short summary of each. Another looks for what is missing. Each one has a narrow job and sees only the material that job requires, so when something goes wrong you can tell which step produced it.</p>
+                <dl class="glossary">
+                    <dt>Agent</dt>
+                    <dd>An AI given one specific job and a written set of instructions for doing it. Not a separate program you buy — a role you define.</dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="answer">
+            <p class="answer-number">02</p>
+            <div>
+                <h2>What does deterministic mean here?</h2>
+                <p>Ask an AI the same question twice and you may get two different answers. That is not a defect. It is how these models work, and it is part of why they are good at noticing patterns in messy human language.</p>
+                <p>But it is a terrible property for anything that needs to be reliable. So the AI never controls the process itself. Ordinary software — the predictable kind, which does the same thing every time — decides what runs in what order, what each agent may read or write, and what gets recorded. The AI interprets. The software keeps order.</p>
+                <dl class="glossary">
+                    <dt>Deterministic</dt>
+                    <dd>Same input, same output, every time. Ordinary software is deterministic. AI models are not.</dd>
+                    <dt>Probabilistic</dt>
+                    <dd>The opposite: results vary between runs. Useful for interpretation, unsuitable for control.</dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="answer">
+            <p class="answer-number">03</p>
+            <div>
+                <h2>What is a trace?</h2>
+                <p>Every claim the system produces carries a record of where it came from: which interview, which passage, which agent proposed it, under which version of the instructions, and what a reviewer decided about it.</p>
+                <p>This is what makes a finding checkable. Someone reading a conclusion months later can follow it back to the exact words a participant said, rather than taking it on faith. Without it, a plausible-sounding sentence and a well-supported one look identical on the page.</p>
+                <dl class="glossary">
+                    <dt>Trace</dt>
+                    <dd>The recorded path from a finished claim back to the original evidence.</dd>
+                    <dt>Provenance</dt>
+                    <dd>Where a piece of information came from and what has happened to it since.</dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="answer">
+            <p class="answer-number">04</p>
+            <div>
+                <h2>What is a review gate?</h2>
+                <p>A point where the work stops until a person looks at it. Nothing moves past a gate on the system's own authority.</p>
+                <p>The agents propose; the researcher disposes. A proposal can be accepted, edited, sent back for a source check, or rejected outright. The decision is recorded alongside the work, so later readers can see not only what was concluded but who agreed to it.</p>
+                <dl class="glossary">
+                    <dt>Review gate</dt>
+                    <dd>A required human approval between one stage of the work and the next.</dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="answer">
+            <p class="answer-number">05</p>
+            <div>
+                <h2>What breaks without this?</h2>
+                <p>Three things, in rough order of how quickly they arrive.</p>
+                <p><strong>Findings that cannot be defended.</strong> A conclusion arrives with no way to check it. It gets copied into a deck, then a strategy document, and somewhere along the way it stops being a guess and starts being a fact — without anyone deciding it should.</p>
+                <p><strong>Cost that grows without limit.</strong> An AI asked to search an unorganized pile of documents has to read all of them to find anything. That is billed by the word. Structure is not tidiness here; it is the difference between a system an organization can afford and one it switches off.</p>
+                <p><strong>Judgment quietly handed over.</strong> A well-formatted summary reads like analysis whether or not it is. The risk is not that AI replaces researchers. It is that people stop checking, because the output looks finished.</p>
+            </div>
+        </section>
+    </div>
+
+    <p class="page-link"><a href="/qualitative-analysis-agent-manifest/">See the rules one agent actually follows →</a></p>
+</main>
+
+<footer>
+    <p>ResearchOps.ai · Research systems with the researcher in the loop.</p>
+    <a href="#top">Back to top</a>
+</footer>
+</body>
+</html>

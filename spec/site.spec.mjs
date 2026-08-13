@@ -17,6 +17,7 @@ const manifestDownloadPath = path.join(
 const legacyManifestPath = path.join(root, "dstl-method-criteria", "index.php");
 const legacyManifestHtmlPath = path.join(root, "dstl-method-criteria", "index.html");
 const approachPath = path.join(root, "qualitative-concept-analysis", "index.html");
+const systemsPath = path.join(root, "how-research-systems-work", "index.html");
 const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
 const analyticsPath = path.join(root, "analytics", "analytics.php");
@@ -149,6 +150,58 @@ test("publishes the work a reader can inspect without asking", () => {
   );
   assert.match(homepage, /href="https:\/\/researchops\.md\/"/);
   assert.match(homepage, /Calibration Matters More Than Automation/);
+});
+
+test("describes the practice without requiring the reader to know the vocabulary", () => {
+  const homepage = readPage(homepagePath);
+  const practice = homepage.slice(homepage.indexOf('<section class="practice"'));
+  const section = practice.slice(0, practice.indexOf("</section>"));
+
+  for (const jargon of [
+    "deterministic",
+    "trace schema",
+    "evaluation fixture",
+    "versioned contract",
+    "review gate",
+    "bounded evidence",
+  ]) {
+    assert.equal(section.toLowerCase().includes(jargon), false, `homepage still leads with "${jargon}"`);
+  }
+
+  assert.match(section, /href="\/how-research-systems-work\/">How these systems work/);
+});
+
+test("explains the vocabulary on a page of its own", () => {
+  assert.equal(fs.existsSync(systemsPath), true);
+
+  const page = readPage(systemsPath);
+
+  assert.match(
+    page,
+    /<link rel="canonical" href="https:\/\/researchops\.ai\/how-research-systems-work\/">/,
+  );
+  assert.match(page, /<title>How Research Systems Work \| ResearchOps\.ai<\/title>/);
+  assert.match(page, /<h2>Why several agents instead of one\?<\/h2>/);
+  assert.match(page, /<h2>What does deterministic mean here\?<\/h2>/);
+  assert.match(page, /<h2>What is a trace\?<\/h2>/);
+  assert.match(page, /<h2>What is a review gate\?<\/h2>/);
+  assert.match(page, /<h2>What breaks without this\?<\/h2>/);
+});
+
+test("defines each term where the reader meets it", () => {
+  const page = readPage(systemsPath);
+
+  for (const term of [
+    "agent",
+    "deterministic",
+    "trace",
+    "review gate",
+    "provenance",
+  ]) {
+    assert.match(page, new RegExp(`<dt>[^<]*${term}[^<]*</dt>`, "i"));
+  }
+
+  assert.match(page, /<a class="brand" href="\/"/);
 });
 
 test("introduces the writing that is not published yet", () => {
