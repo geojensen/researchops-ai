@@ -1,0 +1,212 @@
+.home-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 64px;
+    padding-bottom: 40px;
+    border-top: 3px solid var(--ink);
+}
+
+.home-main > section {
+    padding-block: 54px;
+}
+
+.home-main > section + section {
+    border-top: 1px solid var(--line);
+}
+
+.home-main h2 {
+    margin-bottom: 26px;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.practice p {
+    max-width: 720px;
+    margin-bottom: 20px;
+    font-size: 1.12rem;
+}
+
+.practice p:last-child {
+    margin-bottom: 0;
+}
+
+.work-item {
+    max-width: 720px;
+    padding-bottom: 30px;
+}
+
+.work-item + .work-item {
+    padding-top: 30px;
+    border-top: 1px solid var(--line);
+}
+
+.work-item:last-child {
+    padding-bottom: 0;
+}
+
+.work-item h3 {
+    margin: 0 0 6px;
+    font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+    line-height: 1.15;
+}
+
+.work-item h3 a {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.work-item h3 a:hover,
+.work-item h3 a:focus-visible {
+    color: var(--accent-dark);
+}
+
+.work-meta {
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.work-item p:last-child {
+    margin-bottom: 0;
+}
+
+.work-item p a {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid var(--accent);
+}
+
+.work-item p a:hover,
+.work-item p a:focus-visible {
+    color: var(--accent-dark);
+}
+
+.section-note {
+    max-width: 720px;
+    margin-top: -14px;
+    margin-bottom: 30px;
+    color: var(--muted);
+    font-size: 0.94rem;
+}
+
+.writing-item {
+    max-width: 720px;
+    padding-left: 20px;
+    border-left: 3px solid var(--line);
+}
+
+.writing-item + .writing-item {
+    margin-top: 26px;
+}
+
+.writing-item h3 {
+    margin: 0 0 8px;
+    font-size: 1.12rem;
+    line-height: 1.3;
+}
+
+.writing-item p {
+    margin-bottom: 0;
+    color: var(--muted);
+}
+
+.mailing-list {
+    align-self: start;
+    margin-top: 54px;
+    padding: 26px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+}
+
+.mailing-list h2 {
+    margin-bottom: 10px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.mailing-list p {
+    margin-bottom: 20px;
+    color: var(--muted);
+    font-size: 0.94rem;
+}
+
+.mailing-list input[type="text"],
+.mailing-list input[type="email"] {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 11px 12px;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 0.94rem;
+}
+
+.mailing-list input[type="text"]:focus-visible,
+.mailing-list input[type="email"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+#submit {
+    width: 100%;
+    padding: 11px 12px;
+    color: var(--surface);
+    border: 0;
+    background: var(--accent);
+    font-family: inherit;
+    font-size: 0.94rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#submit:hover,
+#submit:focus-visible {
+    background: var(--accent-dark);
+}
+
+#submit:disabled {
+    background: var(--muted);
+}
+
+.loading-animation {
+    width: 34px;
+    height: 34px;
+    margin: 12px auto;
+    border: 4px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.result {
+    color: var(--accent-dark);
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .home-body {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .mailing-list {
+        margin-bottom: 40px;
+        max-width: 420px;
+    }
+}

@@ -118,6 +118,73 @@ test("links to the manifest from the public homepage", () => {
   assert.match(homepage, /Qualitative Analysis Agent Manifest/);
 });
 
+test("states the practice before asking anything of the reader", () => {
+  const homepage = readPage(homepagePath);
+  const practicePosition = homepage.indexOf("<h1>");
+  const formPosition = homepage.indexOf("<form");
+
+  assert.match(homepage, /<title>George Jensen — Research Systems \| ResearchOps\.ai<\/title>/);
+  assert.match(homepage, /<meta name="description"/);
+  assert.match(homepage, /<h1>I design and deploy research systems\.<\/h1>/);
+  assert.ok(practicePosition > -1);
+  assert.ok(formPosition > -1);
+  assert.ok(practicePosition < formPosition);
+});
+
+test("shares the type system published on the rest of the site", () => {
+  const homepage = readPage(homepagePath);
+
+  assert.match(homepage, /<link rel="stylesheet" href="css\/criteria\.css">/);
+  assert.match(homepage, /<link rel="stylesheet" href="css\/home\.css">/);
+  assert.equal(fs.existsSync(path.join(root, "css", "home.css")), true);
+  assert.equal(fs.existsSync(path.join(root, "css", "index.css")), false);
+});
+
+test("publishes the work a reader can inspect without asking", () => {
+  const homepage = readPage(homepagePath);
+
+  assert.match(
+    homepage,
+    /href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems"/,
+  );
+  assert.match(homepage, /href="https:\/\/researchops\.md\/"/);
+  assert.match(homepage, /Calibration Matters More Than Automation/);
+});
+
+test("introduces the writing that is not published yet", () => {
+  const homepage = readPage(homepagePath);
+  const workPosition = homepage.indexOf('<section class="work"');
+  const writingPosition = homepage.indexOf('<section class="writing"');
+
+  assert.ok(workPosition > -1);
+  assert.ok(writingPosition > workPosition);
+  assert.match(homepage, /Deep Learning Needs Deeper Listening/);
+  assert.match(homepage, /Enterprise Research Systems in the Age of Work AI and GraphRAG/);
+  assert.match(homepage, /From Kubernetes Clusters to Thinking Styles/);
+});
+
+test("marks unpublished writing as unlinked so no reader hits a dead end", () => {
+  const homepage = readPage(homepagePath);
+  const writing = homepage.slice(homepage.indexOf('<section class="writing"'));
+  const section = writing.slice(0, writing.indexOf("</section>"));
+
+  assert.doesNotMatch(section, /<a\s/);
+  assert.match(section, /<p class="section-note">/);
+});
+
+test("keeps the mailing list beside the work rather than in front of it", () => {
+  const homepage = readPage(homepagePath);
+  const asidePosition = homepage.indexOf('<aside class="mailing-list"');
+  const formPosition = homepage.indexOf("<form");
+
+  assert.ok(asidePosition > -1);
+  assert.ok(asidePosition < formPosition);
+  assert.match(homepage, /name="contact-form"/);
+  assert.match(homepage, /name="Full Name"/);
+  assert.match(homepage, /name="Email"/);
+  assert.match(homepage, /<script src="js\/script\.js"><\/script>/);
+});
+
 test("links the manifest and its approach in both directions", () => {
   const manifest = readPage(manifestPath);
   const approach = readPage(approachPath);

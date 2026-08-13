@@ -3,30 +3,100 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ResearchOps.ai</title>
-    <link rel="stylesheet" href="css/index.css">
+    <title>George Jensen — Research Systems | ResearchOps.ai</title>
+    <meta name="description" content="George Jensen designs and deploys research systems: governed agentic analysis, research repositories, and the operational infrastructure underneath them.">
     <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="css/criteria.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
-<body>
-<div class="container">
-    <div class="logo">
+<body id="top">
+<header class="site-header">
+    <a class="brand" href="/" aria-label="ResearchOps.ai home">
         <img src="img/logo.png" alt="ResearchOps.ai">
-    </div> 
-    <form id="form" method="post" action="" name="contact-form">
-        <div class="inputs">
-            <input type="text" name="Full Name" placeholder="Full Name" required>
-            <input type="email" name="Email" placeholder="Email" required>
+    </a>
+</header>
+
+<main>
+    <header class="page-header">
+        <p class="eyebrow">George Jensen</p>
+        <h1>I design and deploy research systems.</h1>
+        <p class="standfirst">Research operations, agentic analysis, and the infrastructure that keeps a conclusion tied to the evidence underneath it.</p>
+    </header>
+
+    <div class="home-body">
+        <div class="home-main">
+            <section class="practice">
+                <h2>The work</h2>
+                <p>Qualitative analysis at scale is trusted only when every conclusion can be traced back to what a participant actually said. Agentic systems make that harder, not easier: probabilistic models produce fluent output whether or not the evidence supports it.</p>
+                <p>So I build the governance around them. Specialist agents work in parallel on bounded evidence; a deterministic layer controls state, permissions, handoffs, and rendering. Versioned contracts, trace schemas, evaluation fixtures, and human review gates make the analysis inspectable rather than merely persuasive.</p>
+                <p>Before research operations, I spent more than twenty years in deep technology — cloud infrastructure, distributed delivery, data platforms, and data science. The throughline since IHETS in 1999, and since my thesis in information science at Indiana University, has been the same question: how an institution holds onto what it knows.</p>
+            </section>
+
+            <section class="work">
+                <h2>Published work</h2>
+
+                <article class="work-item">
+                    <h3><a href="https://www.theresearchopsreview.com/p/what-ais-history-suggests-about-building-agentic-research-systems">Calibration Matters More Than Automation</a></h3>
+                    <p class="work-meta">The ResearchOps Review · April 2026</p>
+                    <p>What AI's history suggests about building agentic research systems. Why scaling AI in a research organization is a governance problem rather than a deployment problem, and why the machine is more useful as a sparring partner than an oracle.</p>
+                </article>
+
+                <article class="work-item">
+                    <h3><a href="/qualitative-analysis-agent-manifest/">Qualitative Analysis Agent Manifest</a></h3>
+                    <p class="work-meta">62 configuration rules · Markdown download</p>
+                    <p>Rules for turning interview quotations into verb-forward, participant-centered concept records that stay tied to exact transcript evidence. <a href="/qualitative-concept-analysis/">How the manifest is used →</a></p>
+                </article>
+
+                <article class="work-item">
+                    <h3><a href="https://researchops.md/">ResearchOps.md</a></h3>
+                    <p class="work-meta">Agent-readable research intelligence</p>
+                    <p>An evolving ResearchOps literature resolved into reviewed concepts with clear definitions and provenance, published for people and agents in the same source of truth.</p>
+                </article>
+            </section>
+
+            <section class="writing">
+                <h2>In progress</h2>
+                <p class="section-note">Drafts in editorial review. Each will be published here in full.</p>
+
+                <article class="writing-item">
+                    <h3>Deep Learning Needs Deeper Listening: A Case for Progressive Agency</h3>
+                    <p>Two phrases that sound like relatives and are not. Where the human-to-human boundary of an interview has to hold, and where AI can do real work on either side of it — researcher preparation before, transcript analysis after, under a manifest a person wrote.</p>
+                </article>
+
+                <article class="writing-item">
+                    <h3>Enterprise Research Systems in the Age of Work AI and GraphRAG</h3>
+                    <p>Regulated enterprises buy site-wide Work AI licenses, then lock the connectors down so hard the searches come back empty. An architecture that separates raw participant custody from governed, de-identified concept nodes — unlocking the investment without breaking a single compliance rule.</p>
+                </article>
+
+                <article class="writing-item">
+                    <h3>From Kubernetes Clusters to Thinking Styles</h3>
+                    <p>Five years of running cluster infrastructure, and then a move into qualitative research that looks like a career break and is not one. The object of care changed; the discipline did not. Where does an interpretation come from, and can you still inspect the lineage when AI participates?</p>
+                </article>
+            </section>
         </div>
-        <div class="submit">
-            <input type="submit" value="Sign me up" id="submit">
-            <div id="loading" style="display: none" class="loading-animation"></div>
-        </div>
-    </form>
-    <div id="responce" style="display: none" class="result">You are signed up.</div>
-    <nav class="resources" aria-label="Research resources">
-        <a href="/qualitative-analysis-agent-manifest/">Qualitative Analysis Agent Manifest <span>62 configuration rules →</span></a>
-    </nav>
-</div>
+
+        <aside class="mailing-list" aria-label="Mailing list">
+            <h2>Mailing list</h2>
+            <p>Occasional notes on research systems and agentic analysis.</p>
+            <form id="form" method="post" action="" name="contact-form">
+                <div class="inputs">
+                    <input type="text" name="Full Name" placeholder="Full Name" required>
+                    <input type="email" name="Email" placeholder="Email" required>
+                </div>
+                <div class="submit">
+                    <input type="submit" value="Sign me up" id="submit">
+                    <div id="loading" style="display: none" class="loading-animation"></div>
+                </div>
+            </form>
+            <div id="responce" style="display: none" class="result">You are signed up.</div>
+        </aside>
+    </div>
+</main>
+
+<footer>
+    <p>ResearchOps.ai · Research systems with the researcher in the loop.</p>
+    <a href="#top">Back to top</a>
+</footer>
 
 <script src="js/script.js"></script>
 </body>
