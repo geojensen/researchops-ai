@@ -64,8 +64,14 @@
 }
 
 .external-link-icon {
-    white-space: nowrap;
-    font-size: 0.75em;
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    margin-left: 0.08em;
+    background: currentColor;
+    vertical-align: 0.04em;
+    -webkit-mask: url("/img/external-link.svg") center / contain no-repeat;
+    mask: url("/img/external-link.svg") center / contain no-repeat;
 }
 
 .work-meta {

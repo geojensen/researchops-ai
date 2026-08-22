@@ -28,6 +28,7 @@ const listeningArticlePath = path.join(
   "deep-learning-needs-deeper-listening",
   "index.html",
 );
+const externalLinkIconPath = path.join(root, "img", "external-link.svg");
 const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
 const analyticsPath = path.join(root, "analytics", "analytics.php");
@@ -156,12 +157,13 @@ test("publishes the work a reader can inspect without asking", () => {
 
   assert.match(
     homepage,
-    /<a href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems" target="_blank" rel="noopener noreferrer" aria-label="Calibration Matters More Than Automation \(opens in a new tab\)">Calibration Matters More Than Automation <span class="external-link-icon" aria-hidden="true">↗<\/span><\/a>/,
+    /<a href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems" target="_blank" rel="noopener noreferrer" aria-label="Calibration Matters More Than Automation \(opens in a new tab\)">Calibration Matters More Than Automation <span class="external-link-icon" aria-hidden="true"><\/span><\/a>/,
   );
   assert.match(
     homepage,
-    /<a href="https:\/\/researchops\.md\/" target="_blank" rel="noopener noreferrer" aria-label="ResearchOps\.md \(opens in a new tab\)">ResearchOps\.md <span class="external-link-icon" aria-hidden="true">↗<\/span><\/a>/,
+    /<a href="https:\/\/researchops\.md\/" target="_blank" rel="noopener noreferrer" aria-label="ResearchOps\.md \(opens in a new tab\)">ResearchOps\.md <span class="external-link-icon" aria-hidden="true"><\/span><\/a>/,
   );
+  assert.equal(fs.existsSync(externalLinkIconPath), true);
   assert.match(homepage, /Calibration Matters More Than Automation/);
 });
 
