@@ -18,6 +18,16 @@ const legacyManifestPath = path.join(root, "dstl-method-criteria", "index.php");
 const legacyManifestHtmlPath = path.join(root, "dstl-method-criteria", "index.html");
 const approachPath = path.join(root, "qualitative-concept-analysis", "index.html");
 const systemsPath = path.join(root, "how-research-systems-work", "index.html");
+const interpretationArticlePath = path.join(
+  root,
+  "system-around-human-interpretation",
+  "index.html",
+);
+const listeningArticlePath = path.join(
+  root,
+  "deep-learning-needs-deeper-listening",
+  "index.html",
+);
 const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
 const analyticsPath = path.join(root, "analytics", "analytics.php");
@@ -204,16 +214,65 @@ test("defines each term where the reader meets it", () => {
   assert.match(page, /<a class="brand" href="\/"/);
 });
 
-test("introduces the writing that is not published yet", () => {
+test("publishes the two completed articles as homepage subpages", () => {
+  const homepage = readPage(homepagePath);
+  const published = homepage.slice(homepage.indexOf('<section class="work"'));
+  const section = published.slice(0, published.indexOf("</section>"));
+
+  assert.equal(fs.existsSync(interpretationArticlePath), true);
+  assert.equal(fs.existsSync(listeningArticlePath), true);
+  assert.match(
+    section,
+    /href="\/system-around-human-interpretation\/">The System Around Human Interpretation<\/a>/,
+  );
+  assert.match(
+    section,
+    /href="\/deep-learning-needs-deeper-listening\/">Deep Learning Needs Deeper Listening: A Case for Progressive Agency<\/a>/,
+  );
+});
+
+test("publishes each article in full at its canonical route", () => {
+  const interpretation = readPage(interpretationArticlePath);
+  const listening = readPage(listeningArticlePath);
+
+  assert.match(
+    interpretation,
+    /<link rel="canonical" href="https:\/\/researchops\.ai\/system-around-human-interpretation\/">/,
+  );
+  assert.match(interpretation, /<h1>The System Around Human Interpretation<\/h1>/);
+  assert.match(interpretation, /<h2>Why thinking styles feel timely<\/h2>/);
+  assert.match(interpretation, /<h2>What cannot be automated away<\/h2>/);
+  assert.match(interpretation, /The infrastructure is still there\./);
+
+  assert.match(
+    listening,
+    /<link rel="canonical" href="https:\/\/researchops\.ai\/deep-learning-needs-deeper-listening\/">/,
+  );
+  assert.match(
+    listening,
+    /<h1>Deep Learning Needs Deeper Listening: A Case for Progressive Agency<\/h1>/,
+  );
+  assert.match(
+    listening,
+    /The machine(?:'|&#x27;)s achievement is scale\. The listener(?:'|&#x27;)s achievement is restraint\./,
+  );
+  assert.match(listening, /<h2>Source notes<\/h2>/);
+  assert.match(listening, /href="https:\/\/openai\.com\/index\/chatgpt\/"/);
+  assert.doesNotMatch(listening, /google\.com\/url|\[next article\]/);
+});
+
+test("introduces only the writing that is not published yet", () => {
   const homepage = readPage(homepagePath);
   const workPosition = homepage.indexOf('<section class="work"');
   const writingPosition = homepage.indexOf('<section class="writing"');
+  const writing = homepage.slice(writingPosition);
+  const section = writing.slice(0, writing.indexOf("</section>"));
 
   assert.ok(workPosition > -1);
   assert.ok(writingPosition > workPosition);
-  assert.match(homepage, /Deep Learning Needs Deeper Listening/);
-  assert.match(homepage, /Enterprise Research Systems in the Age of Work AI and GraphRAG/);
-  assert.match(homepage, /From Kubernetes Clusters to Thinking Styles/);
+  assert.match(section, /Enterprise Research Systems in the Age of Work AI and GraphRAG/);
+  assert.doesNotMatch(section, /Deep Learning Needs Deeper Listening/);
+  assert.doesNotMatch(section, /From Kubernetes Clusters to Thinking Styles/);
 });
 
 test("marks unpublished writing as unlinked so no reader hits a dead end", () => {
