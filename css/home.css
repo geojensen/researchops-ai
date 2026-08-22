@@ -63,6 +63,11 @@
     color: var(--accent-dark);
 }
 
+.external-link-icon {
+    white-space: nowrap;
+    font-size: 0.75em;
+}
+
 .work-meta {
     margin-bottom: 12px;
     color: var(--muted);

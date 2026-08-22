@@ -156,9 +156,12 @@ test("publishes the work a reader can inspect without asking", () => {
 
   assert.match(
     homepage,
-    /href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems"/,
+    /<a href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems" target="_blank" rel="noopener noreferrer" aria-label="Calibration Matters More Than Automation \(opens in a new tab\)">Calibration Matters More Than Automation <span class="external-link-icon" aria-hidden="true">↗<\/span><\/a>/,
   );
-  assert.match(homepage, /href="https:\/\/researchops\.md\/"/);
+  assert.match(
+    homepage,
+    /<a href="https:\/\/researchops\.md\/" target="_blank" rel="noopener noreferrer" aria-label="ResearchOps\.md \(opens in a new tab\)">ResearchOps\.md <span class="external-link-icon" aria-hidden="true">↗<\/span><\/a>/,
+  );
   assert.match(homepage, /Calibration Matters More Than Automation/);
 });
 
@@ -229,6 +232,17 @@ test("publishes the two completed articles as homepage subpages", () => {
     section,
     /href="\/deep-learning-needs-deeper-listening\/">Deep Learning Needs Deeper Listening: A Case for Progressive Agency<\/a>/,
   );
+
+  const listeningPosition = section.indexOf("Deep Learning Needs Deeper Listening");
+  const calibrationPosition = section.indexOf("Calibration Matters More Than Automation");
+  const manifestPosition = section.indexOf("Qualitative Analysis Agent Manifest");
+  const researchOpsPosition = section.indexOf("ResearchOps.md");
+  const interpretationPosition = section.indexOf("The System Around Human Interpretation");
+
+  assert.ok(listeningPosition < calibrationPosition);
+  assert.ok(calibrationPosition < manifestPosition);
+  assert.ok(manifestPosition < researchOpsPosition);
+  assert.ok(researchOpsPosition < interpretationPosition);
 });
 
 test("publishes each article in full at its canonical route", () => {
