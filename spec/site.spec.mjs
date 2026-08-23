@@ -164,6 +164,10 @@ test("publishes the work a reader can inspect without asking", () => {
     /<a href="https:\/\/researchops\.md\/" target="_blank" rel="noopener noreferrer" aria-label="ResearchOps\.md \(opens in a new tab\)">ResearchOps\.md <img class="external-link-icon" src="\/img\/external-link\.svg" alt=""><\/a>/,
   );
   assert.equal(fs.existsSync(externalLinkIconPath), true);
+  assert.match(
+    readPage(path.join(root, "css", "home.css")),
+    /\.external-link-icon\s*\{[^}]*width:\s*0\.5em;[^}]*height:\s*0\.5em;/s,
+  );
   assert.match(homepage, /Calibration Matters More Than Automation/);
 });
 
