@@ -157,16 +157,16 @@ test("publishes the work a reader can inspect without asking", () => {
 
   assert.match(
     homepage,
-    /<a href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems" target="_blank" rel="noopener noreferrer" aria-label="Calibration Matters More Than Automation \(opens in a new tab\)">Calibration Matters More Than Automation <img class="external-link-icon" src="\/img\/external-link\.svg" alt=""><\/a>/,
+    /<a class="external-link" href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems" target="_blank" rel="external noopener noreferrer"><span>Calibration Matters More Than Automation<\/span><img class="external-icon" src="\/img\/external-link\.svg" alt="Opens in new tab" width="14" height="14"><\/a>/,
   );
   assert.match(
     homepage,
-    /<a href="https:\/\/researchops\.md\/" target="_blank" rel="noopener noreferrer" aria-label="ResearchOps\.md \(opens in a new tab\)">ResearchOps\.md <img class="external-link-icon" src="\/img\/external-link\.svg" alt=""><\/a>/,
+    /<a class="external-link" href="https:\/\/researchops\.md\/" target="_blank" rel="external noopener noreferrer"><span>ResearchOps\.md<\/span><img class="external-icon" src="\/img\/external-link\.svg" alt="Opens in new tab" width="14" height="14"><\/a>/,
   );
   assert.equal(fs.existsSync(externalLinkIconPath), true);
   assert.match(
     readPage(path.join(root, "css", "home.css")),
-    /\.external-link-icon\s*\{[^}]*width:\s*0\.5em;[^}]*height:\s*0\.5em;/s,
+    /\.external-icon\s*\{[^}]*width:\s*0?\.875rem;[^}]*height:\s*0?\.875rem;[^}]*object-fit:\s*contain;/s,
   );
   assert.match(homepage, /Calibration Matters More Than Automation/);
 });

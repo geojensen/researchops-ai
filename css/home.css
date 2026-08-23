@@ -63,11 +63,18 @@
     color: var(--accent-dark);
 }
 
-.external-link-icon {
-    width: 0.5em;
-    height: 0.5em;
-    margin-left: 0.08em;
-    vertical-align: 0.04em;
+.external-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.18rem;
+}
+
+.external-icon {
+    display: block;
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    object-fit: contain;
 }
 
 .work-meta {
