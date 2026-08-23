@@ -157,11 +157,11 @@ test("publishes the work a reader can inspect without asking", () => {
 
   assert.match(
     homepage,
-    /<a class="external-link" href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems" target="_blank" rel="external noopener noreferrer"><span>Calibration Matters More Than Automation<\/span><img class="external-icon" src="\/img\/external-link\.svg" alt="Opens in new tab" width="14" height="14"><\/a>/,
+    /<a class="external-link" href="https:\/\/www\.theresearchopsreview\.com\/p\/what-ais-history-suggests-about-building-agentic-research-systems" target="_blank" rel="external noopener noreferrer"><span>Calibration Matters More Than Automation<\/span>&nbsp;<img class="external-icon" src="\/img\/external-link\.svg" alt="Opens in new tab" width="14" height="14"><\/a>/,
   );
   assert.match(
     homepage,
-    /<a class="external-link" href="https:\/\/researchops\.md\/" target="_blank" rel="external noopener noreferrer"><span>ResearchOps\.md<\/span><img class="external-icon" src="\/img\/external-link\.svg" alt="Opens in new tab" width="14" height="14"><\/a>/,
+    /<a class="external-link" href="https:\/\/researchops\.md\/" target="_blank" rel="external noopener noreferrer"><span>ResearchOps\.md<\/span>&nbsp;<img class="external-icon" src="\/img\/external-link\.svg" alt="Opens in new tab" width="14" height="14"><\/a>/,
   );
   assert.equal(fs.existsSync(externalLinkIconPath), true);
   assert.match(
