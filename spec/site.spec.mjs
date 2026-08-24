@@ -276,6 +276,19 @@ test("speaks in the first person on the unlisted detail page", () => {
   assert.doesNotMatch(page, /\u2014/);
 });
 
+test("anchors each detail section so a resume can link straight to it", () => {
+  const page = readPage(disneyPath);
+
+  for (const anchor of [
+    "analysis-pipeline",
+    "traceable-knowledge",
+    "method-practice",
+    "evidence-after-the-study",
+  ]) {
+    assert.match(page, new RegExp(`<section class="answer" id="${anchor}">`));
+  }
+});
+
 test("publishes the Indi Young essay as a homepage subpage", () => {
   const homepage = readPage(homepagePath);
   const published = homepage.slice(homepage.indexOf('<section class="work"'));
