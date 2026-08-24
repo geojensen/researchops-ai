@@ -273,6 +273,7 @@ test("speaks in the first person on the unlisted detail page", () => {
     "What a year of method practice taught me",
     "Where I keep the evidence after a study ends",
   ]);
+  assert.doesNotMatch(page, /\u2014/);
 });
 
 test("publishes the Indi Young essay as a homepage subpage", () => {
