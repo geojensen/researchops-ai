@@ -189,6 +189,11 @@ test("describes the practice without requiring the reader to know the vocabulary
   }
 
   assert.match(section, /href="\/how-research-systems-work\/">How these systems work/);
+  assert.match(
+    section,
+    /Before research operations was a thing, I spent more than two decades in deep technology — cloud infrastructure, distributed delivery, data platforms, and data science, beginning in educational broadcasting and distance learning\. The throughline has been the same question: how an institution holds onto what it knows\./,
+  );
+  assert.doesNotMatch(section, /IHETS|1999/);
 });
 
 test("explains the vocabulary on a page of its own", () => {
