@@ -357,7 +357,7 @@ test("marks unpublished writing as unlinked so no reader hits a dead end", () =>
   const styles = readPage(path.join(root, "css", "home.css"));
 
   assert.match(styles, /\.home-main \.section-note \{[^}]*margin-top: -14px;/s);
-  assert.doesNotMatch(styles, /^\.section-note \{[^}]*margin-top: -14px;/ms);
+  assert.match(styles, /^\.section-note \{[^}]*margin-top: 16px;/ms);
 });
 
 test("keeps the mailing list beside the work rather than in front of it", () => {
