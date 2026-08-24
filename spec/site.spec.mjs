@@ -28,6 +28,7 @@ const listeningArticlePath = path.join(
   "deep-learning-needs-deeper-listening",
   "index.html",
 );
+const indiArticlePath = path.join(root, "my-work-with-indi-young", "index.html");
 const externalLinkIconPath = path.join(root, "img", "external-link.svg");
 const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
@@ -249,6 +250,32 @@ test("publishes the two completed articles as homepage subpages", () => {
   assert.ok(calibrationPosition < manifestPosition);
   assert.ok(manifestPosition < researchOpsPosition);
   assert.ok(researchOpsPosition < interpretationPosition);
+});
+
+test("publishes the Indi Young essay as a homepage subpage", () => {
+  const homepage = readPage(homepagePath);
+  const published = homepage.slice(homepage.indexOf('<section class="work"'));
+  const section = published.slice(0, published.indexOf("</section>"));
+  const page = readPage(indiArticlePath);
+
+  assert.match(section, /href="\/my-work-with-indi-young\/">My Work with Indi Young<\/a>/);
+  assert.match(
+    page,
+    /<link rel="canonical" href="https:\/\/researchops\.ai\/my-work-with-indi-young\/">/,
+  );
+  assert.match(page, /<h1>My Work with Indi Young<\/h1>/);
+  assert.match(
+    page,
+    /<p class="standfirst">Learning the method, challenging its boundaries, and carrying it toward enterprise qualitative AI\.<\/p>/,
+  );
+  assert.match(page, /<h2>The day Indi asked why I was quiet<\/h2>/);
+  assert.match(page, /<h2>Building agents that do not erase the method<\/h2>/);
+  assert.match(page, /<h2>The work I did not leave<\/h2>/);
+  assert.match(page, /Evangelism without critique becomes branding\./);
+  assert.match(
+    page,
+    /<a href="https:\/\/indiyoung\.com" target="_blank" rel="external noopener noreferrer">/,
+  );
 });
 
 test("publishes each article in full at its canonical route", () => {
