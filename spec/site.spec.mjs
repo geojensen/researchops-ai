@@ -29,6 +29,7 @@ const listeningArticlePath = path.join(
   "index.html",
 );
 const indiArticlePath = path.join(root, "my-work-with-indi-young", "index.html");
+const disneyPath = path.join(root, "disney", "index.html");
 const externalLinkIconPath = path.join(root, "img", "external-link.svg");
 const trackerPath = path.join(root, "analytics", "record.php");
 const dashboardPath = path.join(root, "analytics", "index.php");
@@ -257,6 +258,23 @@ test("publishes the two completed articles as homepage subpages", () => {
   assert.ok(researchOpsPosition < interpretationPosition);
 });
 
+test("speaks in the first person on the unlisted detail page", () => {
+  const page = readPage(disneyPath);
+  const headings = [...page.matchAll(/<h2>([^<]+)<\/h2>/g)].map(([, heading]) => heading);
+
+  assert.match(page, /<h1>Research operations systems in practice<\/h1>/);
+  assert.match(
+    page,
+    /<p class="standfirst">Four things my resume can only name in a single line\. What I built, how it holds together, and where I am still required\.<\/p>/,
+  );
+  assert.deepEqual(headings, [
+    "How I built an analysis pipeline that renders its own board",
+    "Why I keep the rejected grouping on the board",
+    "What a year of method practice taught me",
+    "Where I keep the evidence after a study ends",
+  ]);
+});
+
 test("publishes the Indi Young essay as a homepage subpage", () => {
   const homepage = readPage(homepagePath);
   const published = homepage.slice(homepage.indexOf('<section class="work"'));
@@ -334,6 +352,11 @@ test("marks unpublished writing as unlinked so no reader hits a dead end", () =>
 
   assert.doesNotMatch(section, /<a\s/);
   assert.match(section, /<p class="section-note">/);
+
+  const styles = readPage(path.join(root, "css", "home.css"));
+
+  assert.match(styles, /\.home-main \.section-note \{[^}]*margin-top: -14px;/s);
+  assert.doesNotMatch(styles, /^\.section-note \{[^}]*margin-top: -14px;/ms);
 });
 
 test("keeps the mailing list beside the work rather than in front of it", () => {

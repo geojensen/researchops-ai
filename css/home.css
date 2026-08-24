@@ -127,10 +127,14 @@
 
 .section-note {
     max-width: 720px;
-    margin-top: -14px;
+    margin-top: 30px;
     margin-bottom: 30px;
     color: var(--muted);
     font-size: 0.94rem;
+}
+
+.home-main .section-note {
+    margin-top: -14px;
 }
 
 .writing-item {
