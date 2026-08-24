@@ -269,7 +269,7 @@ test("speaks in the first person on the unlisted detail page", () => {
   );
   assert.deepEqual(headings, [
     "How I built an analysis pipeline that renders its own board",
-    "Why I keep the rejected grouping on the board",
+    "Why bias, generalization, and compression break a trace",
     "What a year of method practice taught me",
     "Where I keep the evidence after a study ends",
   ]);
