@@ -265,7 +265,7 @@ test("speaks in the first person on the unlisted detail page", () => {
   assert.match(page, /<h1>Research operations systems in practice<\/h1>/);
   assert.match(
     page,
-    /<p class="standfirst">Four things my resume can only name in a single line\. What I built, how it holds together, and where I am still required\.<\/p>/,
+    /<p class="standfirst">Four things my resume only touched on\. What I built, how it holds together, and where I am still required\.<\/p>/,
   );
   assert.deepEqual(headings, [
     "How I built an analysis pipeline that renders its own board",
